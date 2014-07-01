@@ -1,0 +1,1410 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <gantry id="R01-R-MX1-0010">
+    <device id="1" stationing="-1.01" position="SOKP vpravo" ppk="R01-D-B20axx9-0010">
+      <subdevice id="0" type="LED" prefix="B90M10">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="-1.01" position="SOKP vpravo" ppk="R01-D-KZ1xxx9-0010">
+      <subdevice id="0" type="LED" prefix="F90M10">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90M10">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="-1.01" position="SOKP vpravo" ppk="R01-D-KZ2xxx3-0010">
+      <subdevice id="0" type="LED" prefix="A30M10">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30M10">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="-1.01" position="SOKP vpravo" ppk="R01-D-B26S8c3-0010">
+      <subdevice id="0" type="LED" prefix="F30M10">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="-1.01" position="SOKP vpravo" ppk="R01-D-B20axx1-0010">
+      <subdevice id="0" type="LED" prefix="B10M10">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="1.008" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90815">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30815">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX1-0012">
+    <device id="1" stationing="-1.2" position="SOKP vlevo" ppk="R01-D-B20axx0-0012">
+      <subdevice id="0" type="LED" prefix="B00M12">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="-1.2" position="SOKP vlevo" ppk="R01-D-KZ1xxx0-0012">
+      <subdevice id="0" type="LED" prefix="F00M12">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00M12">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="-1.2" position="SOKP vlevo" ppk="R01-D-KZ2xxx4-0012">
+      <subdevice id="0" type="LED" prefix="A40M12">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40M12">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="-1.2" position="SOKP vlevo" ppk="R01-D-B26S8c4-0012">
+      <subdevice id="0" type="LED" prefix="F40M12">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="-1.2" position="SOKP vlevo" ppk="R01-D-B20axx2-0012">
+      <subdevice id="0" type="LED" prefix="B20M12">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="-1.01" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00813">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40813">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX1-0028">
+    <device id="1" stationing="-2.801" position="SOKP vpravo" ppk="R01-D-B20axx9-0028">
+      <subdevice id="0" type="LED" prefix="B90M28">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="-2.801" position="SOKP vpravo" ppk="R01-D-KZ1xxx9-0028">
+      <subdevice id="0" type="LED" prefix="F90M28">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90M28">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="-2.801" position="SOKP vpravo" ppk="R01-D-KZ2xxx3-0028">
+      <subdevice id="0" type="LED" prefix="A30M28">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30M28">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="-2.801" position="SOKP vpravo" ppk="R01-D-B26S8c3-0028">
+      <subdevice id="0" type="LED" prefix="F30M28">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="-2.801" position="SOKP vpravo" ppk="R01-D-B20axx1-0028">
+      <subdevice id="0" type="LED" prefix="B10M28">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="-2.799" position="SOKP vlevo" ppk="R01-D-B20axx0-0027">
+      <subdevice id="0" type="LED" prefix="B00M27">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="-2.799" position="SOKP vlevo" ppk="R01-D-KZ1xxx0-0027">
+      <subdevice id="0" type="LED" prefix="F00M27">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00M27">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="8" stationing="-2.799" position="SOKP vlevo" ppk="R01-D-KZ2xxx4-0027">
+      <subdevice id="0" type="LED" prefix="A40M27">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40M27">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="9" stationing="-2.799" position="SOKP vlevo" ppk="R01-D-B26S8c4-0027">
+      <subdevice id="0" type="LED" prefix="F40M27">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="10" stationing="-2.799" position="SOKP vlevo" ppk="R01-D-B20axx2-0027">
+      <subdevice id="0" type="LED" prefix="B20M27">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="-2.799" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90797">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30797">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="-1.2" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00797">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40797">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX1-0044">
+    <device id="1" stationing="-4.46" position="SOKP vpravo" ppk="R01-D-B20axx9-0044">
+      <subdevice id="0" type="LED" prefix="B90M44">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="-4.46" position="SOKP vpravo" ppk="R01-D-KZ1xxx9-0044">
+      <subdevice id="0" type="LED" prefix="F90M44">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90M44">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="-4.46" position="SOKP vpravo" ppk="R01-D-KZ2xxx3-0044">
+      <subdevice id="0" type="LED" prefix="A30M44">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30M44">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="-4.46" position="SOKP vpravo" ppk="R01-D-B26S8c3-0044">
+      <subdevice id="0" type="LED" prefix="F30M44">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="-4.46" position="SOKP vpravo" ppk="R01-D-B20axx1-0044">
+      <subdevice id="0" type="LED" prefix="B10M44">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="-4.2" position="SOKP vlevo" ppk="R01-D-B20axx0-0042">
+      <subdevice id="0" type="LED" prefix="B00M42">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="-4.2" position="SOKP vlevo" ppk="R01-D-KZ1xxx0-0042">
+      <subdevice id="0" type="LED" prefix="F00M42">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00M42">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="8" stationing="-4.2" position="SOKP vlevo" ppk="R01-D-KZ2xxx4-0042">
+      <subdevice id="0" type="LED" prefix="A40M42">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40M42">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="9" stationing="-4.2" position="SOKP vlevo" ppk="R01-D-B26S8c4-0042">
+      <subdevice id="0" type="LED" prefix="F40M42">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="10" stationing="-4.2" position="SOKP vlevo" ppk="R01-D-B20axx2-0042">
+      <subdevice id="0" type="LED" prefix="B20M42">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="-4.46" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90781">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30781">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="-4.2" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00783">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40783">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX1-0055">
+    <device id="1" stationing="-5.55" position="SOKP vpravo" ppk="R01-D-B20axx9-0055">
+      <subdevice id="0" type="LED" prefix="B90M55">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="-5.55" position="SOKP vpravo" ppk="R01-D-KZ1xxx9-0055">
+      <subdevice id="0" type="LED" prefix="F90M55">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90M55">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="-5.55" position="SOKP vpravo" ppk="R01-D-KZ2xxx3-0055">
+      <subdevice id="0" type="LED" prefix="A30M55">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30M55">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="-5.55" position="SOKP vpravo" ppk="R01-D-B26S8c3-0055">
+      <subdevice id="0" type="LED" prefix="F30M55">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="-5.55" position="SOKP vpravo" ppk="R01-D-B20axx1-0055">
+      <subdevice id="0" type="LED" prefix="B10M55">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="-5.415" position="SOKP vlevo" ppk="R01-D-B20axx0-0054">
+      <subdevice id="0" type="LED" prefix="B00M54">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="-5.415" position="SOKP vlevo" ppk="R01-D-KZ1xxx0-0054">
+      <subdevice id="0" type="LED" prefix="F00M54">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00M54">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="8" stationing="-5.415" position="SOKP vlevo" ppk="R01-D-KZ2xxx4-0054">
+      <subdevice id="0" type="LED" prefix="A40M54">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40M54">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="9" stationing="-5.415" position="SOKP vlevo" ppk="R01-D-B26S8c4-0054">
+      <subdevice id="0" type="LED" prefix="F40M54">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="10" stationing="-5.415" position="SOKP vlevo" ppk="R01-D-B20axx2-0054">
+      <subdevice id="0" type="LED" prefix="B20M54">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="-5.55" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90770">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30770">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="-5.415" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00771">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40771">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10010">
+    <device id="1" stationing="1.008" position="SOKP vpravo" ppk="R01-D-B20axx90010">
+      <subdevice id="0" type="LED" prefix="B90010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="1.008" position="SOKP vpravo" ppk="R01-D-KZ1xxx90010">
+      <subdevice id="0" type="LED" prefix="F90010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="1.008" position="SOKP vpravo" ppk="R01-D-KZ2xxx30010">
+      <subdevice id="0" type="LED" prefix="A30010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="1.008" position="SOKP vpravo" ppk="R01-D-B26S8c30010">
+      <subdevice id="0" type="LED" prefix="F30010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="1.008" position="SOKP vpravo" ppk="R01-D-B20axx10010">
+      <subdevice id="0" type="LED" prefix="B10010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="1.008" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30010">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10028">
+    <device id="1" stationing="2.813" position="SOKP vlevo" ppk="R01-D-B20axx00028">
+      <subdevice id="0" type="LED" prefix="B00028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="2.813" position="SOKP vlevo" ppk="R01-D-KZ1xxx00028">
+      <subdevice id="0" type="LED+DT" prefix="F00028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="2.813" position="SOKP vlevo" ppk="R01-D-KZ2xxx40028">
+      <subdevice id="0" type="LED+DT" prefix="A40028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="2.813" position="SOKP vlevo" ppk="R01-D-B26S8c40028">
+      <subdevice id="0" type="LED" prefix="F40028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="2.813" position="SOKP vlevo" ppk="R01-D-B20axx20028">
+      <subdevice id="0" type="LED" prefix="B20028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="2.8" position="SOKP vpravo" ppk="R01-D-B20axx90028">
+      <subdevice id="0" type="LED" prefix="B90028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="2.8" position="SOKP vpravo" ppk="R01-D-KZ1xxx90028">
+      <subdevice id="0" type="LED+DT" prefix="F90028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="8" stationing="2.8" position="SOKP vpravo" ppk="R01-D-KZ2xxx30028">
+      <subdevice id="0" type="LED+DT" prefix="A30028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="9" stationing="2.8" position="SOKP vpravo" ppk="R01-D-B26S8c30028">
+      <subdevice id="0" type="LED" prefix="F30028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="10" stationing="2.8" position="SOKP vpravo" ppk="R01-D-B20axx10028">
+      <subdevice id="0" type="LED" prefix="B10028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="2.8" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="2.8" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40028">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10042">
+    <device id="1" stationing="4.385" position="SOKP vlevo" ppk="R01-D-B20axx00043">
+      <subdevice id="0" type="LED" prefix="B00043">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="4.385" position="SOKP vlevo" ppk="R01-D-KZ1xxx00043">
+      <subdevice id="0" type="LED+DT" prefix="F00043">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="4.385" position="SOKP vlevo" ppk="R01-D-KZ2xxx40043">
+      <subdevice id="0" type="LED+DT" prefix="A40043">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="4.385" position="SOKP vlevo" ppk="R01-D-B26S8c40043">
+      <subdevice id="0" type="LED" prefix="F40043">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="4.385" position="SOKP vlevo" ppk="R01-D-B20axx20043">
+      <subdevice id="0" type="LED" prefix="B20043">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="4.265" position="SOKP vpravo" ppk="R01-D-B20axx90042">
+      <subdevice id="0" type="LED" prefix="B90042">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="4.265" position="SOKP vpravo" ppk="R01-D-KZ1xxx90042">
+      <subdevice id="0" type="LED+DT" prefix="F90042">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="8" stationing="4.265" position="SOKP vpravo" ppk="R01-D-KZ2xxx30042">
+      <subdevice id="0" type="LED+DT" prefix="A30042">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="9" stationing="4.265" position="SOKP vpravo" ppk="R01-D-B26S8c30042">
+      <subdevice id="0" type="LED" prefix="F30042">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="10" stationing="4.265" position="SOKP vpravo" ppk="R01-D-B20axx10042">
+      <subdevice id="0" type="LED" prefix="B10042">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="4.2" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90042">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30042">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="4.3" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00043">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40043">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10054">
+    <device id="1" stationing="5.47" position="SOKP vpravo" ppk="R01-D-B20axx90054">
+      <subdevice id="0" type="LED" prefix="B90054">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="5.47" position="SOKP vpravo" ppk="R01-D-KZ1xxx90054">
+      <subdevice id="0" type="LED+DT" prefix="F90054">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="5.47" position="SOKP vpravo" ppk="R01-D-KZ2xxx30054">
+      <subdevice id="0" type="LED+DT" prefix="A30054">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="5.47" position="SOKP vpravo" ppk="R01-D-B26S8c30054">
+      <subdevice id="0" type="LED" prefix="F30054">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="5.47" position="SOKP vpravo" ppk="R01-D-B20axx10054">
+      <subdevice id="0" type="LED" prefix="B10054">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="5.4" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90054">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30054">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10056">
+    <device id="1" stationing="5.805" position="SOKP vlevo" ppk="R01-D-B20axx00058">
+      <subdevice id="0" type="LED" prefix="B00058">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="5.805" position="SOKP vlevo" ppk="R01-D-KZ1xxx00058">
+      <subdevice id="0" type="LED+DT" prefix="F00058">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="5.805" position="SOKP vlevo" ppk="R01-D-KZ2xxx40058">
+      <subdevice id="0" type="LED+DT" prefix="A40058">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="5.805" position="SOKP vlevo" ppk="R01-D-B26S8c40058">
+      <subdevice id="0" type="LED" prefix="F40058">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="5.805" position="SOKP vlevo" ppk="R01-D-B20axx20058">
+      <subdevice id="0" type="LED" prefix="B20058">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="5.8" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00058">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40058">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10068">
+    <device id="1" stationing="6.845" position="SOKP vlevo" ppk="R01-D-B20axx00068">
+      <subdevice id="0" type="LED" prefix="B00068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="6.845" position="SOKP vlevo" ppk="R01-D-S8dxxx00068">
+      <subdevice id="0" type="LED" prefix="F00068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="6.845" position="SOKP vlevo" ppk="R01-D-KZ2xxx60068">
+      <subdevice id="0" type="LED+DT" prefix="A60068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="6.845" position="SOKP vlevo" ppk="R01-D-KZ1xxx60068">
+      <subdevice id="0" type="LED+DT" prefix="F60068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="6.845" position="SOKP vlevo" ppk="R01-D-KZ2xxx40068">
+      <subdevice id="0" type="LED+DT" prefix="A40068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="6.845" position="SOKP vlevo" ppk="R01-D-B26S8c40068">
+      <subdevice id="0" type="LED" prefix="F40068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="6.845" position="SOKP vlevo" ppk="R01-D-B20axx20068">
+      <subdevice id="0" type="LED" prefix="B20068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="6.8" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD60068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="2" type="LD" prefix="LD40068">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10097">
+    <device id="1" stationing="9.74" position="SOKP vpravo" ppk="R01-D-B20axx90097">
+      <subdevice id="0" type="LED" prefix="B90097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="9.74" position="SOKP vpravo" ppk="R01-D-KZ1xxx90097">
+      <subdevice id="0" type="LED" prefix="F90097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="9.74" position="SOKP vpravo" ppk="R01-D-KZ2xxx30097">
+      <subdevice id="0" type="LED" prefix="A30097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="9.74" position="SOKP vpravo" ppk="R01-D-B26S8c30097">
+      <subdevice id="0" type="LED" prefix="F30097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="9.74" position="SOKP vpravo" ppk="R01-D-B20axx10097">
+      <subdevice id="0" type="LED" prefix="B10097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="9.74" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30097">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10105">
+    <device id="1" stationing="10.581" position="SOKP vpravo" ppk="R01-D-B20axx90105">
+      <subdevice id="0" type="LED" prefix="B90105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="10.581" position="SOKP vpravo" ppk="R01-D-KZ1xxx90105">
+      <subdevice id="0" type="LED" prefix="F90105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="10.581" position="SOKP vpravo" ppk="R01-D-KZ2xxx50105">
+      <subdevice id="0" type="LED" prefix="A50105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A50105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="10.581" position="SOKP vpravo" ppk="R01-D-KZ5xxx50105">
+      <subdevice id="0" type="LED" prefix="F50105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F50105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="10.581" position="SOKP vpravo" ppk="R01-D-KZ2xxx30105">
+      <subdevice id="0" type="LED" prefix="A30105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="10.581" position="SOKP vpravo" ppk="R01-D-B26S8c30105">
+      <subdevice id="0" type="LED" prefix="F30105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="10.581" position="SOKP vpravo" ppk="R01-D-B20axx10105">
+      <subdevice id="0" type="LED" prefix="B10105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="10.581" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD50105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="2" type="LD" prefix="LD30105">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10165">
+    <device id="1" stationing="16.555" position="SOKP vpravo" ppk="R01-D-B20axx90165">
+      <subdevice id="0" type="LED" prefix="B90165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="16.555" position="SOKP vpravo" ppk="R01-D-KZ1xxx90165">
+      <subdevice id="0" type="LED" prefix="F90165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="16.555" position="SOKP vpravo" ppk="R01-D-KZ2xxx30165">
+      <subdevice id="0" type="LED" prefix="A30165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="16.555" position="SOKP vpravo" ppk="R01-D-B26S8c30165">
+      <subdevice id="0" type="LED" prefix="F30165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="16.555" position="SOKP vpravo" ppk="R01-D-B20axx10165">
+      <subdevice id="0" type="LED" prefix="B10165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="16.555" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30165">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10182">
+    <device id="1" stationing="18.275" position="SOKP vpravo" ppk="R01-D-B20axx90182">
+      <subdevice id="0" type="LED" prefix="B90182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="18.275" position="SOKP vpravo" ppk="R01-D-KZ1xxx90182">
+      <subdevice id="0" type="LED" prefix="F90182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="18.275" position="SOKP vpravo" ppk="R01-D-KZ2xxx30182">
+      <subdevice id="0" type="LED" prefix="A30182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="18.275" position="SOKP vpravo" ppk="R01-D-B26S8c30182">
+      <subdevice id="0" type="LED" prefix="F30182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="18.275" position="SOKP vpravo" ppk="R01-D-B20axx10182">
+      <subdevice id="0" type="LED" prefix="B10182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="18.275" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30182">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10199">
+    <device id="1" stationing="19.95" position="SOKP vpravo" ppk="R01-D-B20axx90199">
+      <subdevice id="0" type="LED" prefix="B90199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="19.95" position="SOKP vpravo" ppk="R01-D-KZ1xxx90199">
+      <subdevice id="0" type="LED" prefix="F90199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="19.95" position="SOKP vpravo" ppk="R01-D-KZ2xxx30199">
+      <subdevice id="0" type="LED" prefix="A30199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="19.95" position="SOKP vpravo" ppk="R01-D-B26S8c30199">
+      <subdevice id="0" type="LED" prefix="F30199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="19.95" position="SOKP vpravo" ppk="R01-D-B20axx10199">
+      <subdevice id="0" type="LED" prefix="B10199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="19.95" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30199">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10214">
+    <device id="1" stationing="21.47" position="SOKP vpravo" ppk="R01-D-B20axx90214">
+      <subdevice id="0" type="LED" prefix="B90214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="21.47" position="SOKP vpravo" ppk="R01-D-KZ1xxx90214">
+      <subdevice id="0" type="LED" prefix="F90214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="21.47" position="SOKP vpravo" ppk="R01-D-KZ2xxx30214">
+      <subdevice id="0" type="LED" prefix="A30214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="21.47" position="SOKP vpravo" ppk="R01-D-B26S8c30214">
+      <subdevice id="0" type="LED" prefix="F30214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="21.47" position="SOKP vpravo" ppk="R01-D-B20axx10214">
+      <subdevice id="0" type="LED" prefix="B10214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="21.47" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30214">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20004">
+    <device id="1" stationing="0.495" position="SOKP vlevo" ppk="R01-D-B20axx00004">
+      <subdevice id="0" type="LED" prefix="B00004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="0.495" position="SOKP vlevo" ppk="R01-D-KZ1xxx00004">
+      <subdevice id="0" type="LED" prefix="F00004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="0.495" position="SOKP vlevo" ppk="R01-D-KZ2xxx40004">
+      <subdevice id="0" type="LED" prefix="A40004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="0.495" position="SOKP vlevo" ppk="R01-D-B26S8c40004">
+      <subdevice id="0" type="LED" prefix="F40004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="0.495" position="SOKP vlevo" ppk="R01-D-B20axx20004">
+      <subdevice id="0" type="LED" prefix="B20004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="0.495" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40004">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20017">
+    <device id="1" stationing="1.7" position="SOKP vlevo" ppk="R01-D-B20axx00017">
+      <subdevice id="0" type="LED" prefix="B00017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="1.7" position="SOKP vlevo" ppk="R01-D-KZ1xxx00017">
+      <subdevice id="0" type="LED+DT" prefix="F00017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="1.7" position="SOKP vlevo" ppk="R01-D-KZ2xxx40017">
+      <subdevice id="0" type="LED+DT" prefix="A40017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="1.7" position="SOKP vlevo" ppk="R01-D-B26S8c40017">
+      <subdevice id="0" type="LED" prefix="F40017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="1.7" position="SOKP vlevo" ppk="R01-D-B20axx20017">
+      <subdevice id="0" type="LED" prefix="B20017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="1.85" position="SOKP vpravo" ppk="R01-D-B20axx90018">
+      <subdevice id="0" type="LED" prefix="B90018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="1.85" position="SOKP vpravo" ppk="R01-D-KZ1xxx90018">
+      <subdevice id="0" type="LED+DT" prefix="F90018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="8" stationing="1.85" position="SOKP vpravo" ppk="R01-D-KZ2xxx30018">
+      <subdevice id="0" type="LED+DT" prefix="A30018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="9" stationing="1.85" position="SOKP vpravo" ppk="R01-D-B26S8c30018">
+      <subdevice id="0" type="LED" prefix="F30018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="10" stationing="1.85" position="SOKP vpravo" ppk="R01-D-B20axx10018">
+      <subdevice id="0" type="LED" prefix="B10018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="1.85" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD30018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="1.7" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20099">
+    <device id="1" stationing="9.925" position="SOKP vlevo" ppk="R01-D-B20axx00099">
+      <subdevice id="0" type="LED" prefix="B00099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="9.925" position="SOKP vlevo" ppk="R01-D-KZ1xxx00099">
+      <subdevice id="0" type="LED" prefix="F00099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="9.925" position="SOKP vlevo" ppk="R01-D-KZ2xxx60099">
+      <subdevice id="0" type="LED" prefix="A60099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A60099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="9.925" position="SOKP vlevo" ppk="R01-D-KZ5xxx60099">
+      <subdevice id="0" type="LED" prefix="F60099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F60099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="9.925" position="SOKP vlevo" ppk="R01-D-KZ2xxx40099">
+      <subdevice id="0" type="LED" prefix="A40099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="9.925" position="SOKP vlevo" ppk="R01-D-B26S8c40099">
+      <subdevice id="0" type="LED" prefix="F40099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="9.925" position="SOKP vlevo" ppk="R01-D-B20axx20099">
+      <subdevice id="0" type="LED" prefix="B20099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="9.925" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD60099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="2" type="LD" prefix="LD40099">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20113">
+    <device id="1" stationing="11.622" position="SOKP vlevo" ppk="R01-D-B20axx00116">
+      <subdevice id="0" type="LED" prefix="B00116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="11.622" position="SOKP vlevo" ppk="R01-D-KZ1xxx00116">
+      <subdevice id="0" type="LED" prefix="F00116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="11.622" position="SOKP vlevo" ppk="R01-D-KZ2xxx40116">
+      <subdevice id="0" type="LED" prefix="A40116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="11.622" position="SOKP vlevo" ppk="R01-D-B26S8c40116">
+      <subdevice id="0" type="LED" prefix="F40116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="11.622" position="SOKP vlevo" ppk="R01-D-B20axx20116">
+      <subdevice id="0" type="LED" prefix="B20116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="11.622" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40116">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20136">
+    <device id="1" stationing="13.613" position="SOKP vpravo" ppk="R01-D-B20axx90136">
+      <subdevice id="0" type="LED" prefix="B90136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="13.613" position="SOKP vpravo" ppk="R01-D-KZ1xxx90136">
+      <subdevice id="0" type="LED" prefix="F90136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F90136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="13.613" position="SOKP vpravo" ppk="R01-D-KZ2xxx50136">
+      <subdevice id="0" type="LED" prefix="A50136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A50136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="13.613" position="SOKP vpravo" ppk="R01-D-KZ5xxx50136">
+      <subdevice id="0" type="LED" prefix="F50136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F50136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="13.613" position="SOKP vpravo" ppk="R01-D-KZ2xxx30136">
+      <subdevice id="0" type="LED" prefix="A30136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A30136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="13.613" position="SOKP vpravo" ppk="R01-D-B26S8c30136">
+      <subdevice id="0" type="LED" prefix="F30136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="13.613" position="SOKP vpravo" ppk="R01-D-B20axx10136">
+      <subdevice id="0" type="LED" prefix="B10136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="21" stationing="13.613" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD90136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD50136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="2" type="LD" prefix="LD30136">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20145">
+    <device id="1" stationing="14.524" position="SOKP vlevo" ppk="R01-D-B20axx00145">
+      <subdevice id="0" type="LED" prefix="B00145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="14.524" position="SOKP vlevo" ppk="R01-D-KZ1xxx00145">
+      <subdevice id="0" type="LED" prefix="F00145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="14.524" position="SOKP vlevo" ppk="R01-D-KZ2xxx40145">
+      <subdevice id="0" type="LED" prefix="A40145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="14.524" position="SOKP vlevo" ppk="R01-D-B26S8c40145">
+      <subdevice id="0" type="LED" prefix="F40145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="14.524" position="SOKP vlevo" ppk="R01-D-B20axx20145">
+      <subdevice id="0" type="LED" prefix="B20145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="14.524" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD60145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="2" type="LD" prefix="LD40145">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20156">
+    <device id="1" stationing="15.745" position="SOKP vlevo" ppk="R01-D-B20axx00157">
+      <subdevice id="0" type="LED" prefix="B00157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="15.745" position="SOKP vlevo" ppk="R01-D-KZ1xxx00157">
+      <subdevice id="0" type="LED" prefix="F00157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="15.745" position="SOKP vlevo" ppk="R01-D-KZ2xxx40157">
+      <subdevice id="0" type="LED" prefix="A40157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="15.745" position="SOKP vlevo" ppk="R01-D-B26S8c40157">
+      <subdevice id="0" type="LED" prefix="F40157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="15.745" position="SOKP vlevo" ppk="R01-D-B20axx20157">
+      <subdevice id="0" type="LED" prefix="B20157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="15.745" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD60157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="2" type="LD" prefix="LD40157">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20170">
+    <device id="1" stationing="17.08" position="SOKP vlevo" ppk="R01-D-B20axx00170">
+      <subdevice id="0" type="LED" prefix="B00170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="17.08" position="SOKP vlevo" ppk="R01-D-KZ1xxx00170">
+      <subdevice id="0" type="LED" prefix="F00170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="17.08" position="SOKP vlevo" ppk="R01-D-KZ2xxx40170">
+      <subdevice id="0" type="LED" prefix="A40170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="17.08" position="SOKP vlevo" ppk="R01-D-B26S8c40170">
+      <subdevice id="0" type="LED" prefix="F40170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="17.08" position="SOKP vlevo" ppk="R01-D-B20axx20170">
+      <subdevice id="0" type="LED" prefix="B20170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="17.08" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40170">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20187">
+    <device id="1" stationing="18.73" position="SOKP vlevo" ppk="R01-D-B20axx00187">
+      <subdevice id="0" type="LED" prefix="B00187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="18.73" position="SOKP vlevo" ppk="R01-D-KZ1xxx00187">
+      <subdevice id="0" type="LED" prefix="F00187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="18.73" position="SOKP vlevo" ppk="R01-D-KZ2xxx40187">
+      <subdevice id="0" type="LED" prefix="A40187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="18.73" position="SOKP vlevo" ppk="R01-D-B26S8c40187">
+      <subdevice id="0" type="LED" prefix="F40187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="18.73" position="SOKP vlevo" ppk="R01-D-B20axx20187">
+      <subdevice id="0" type="LED" prefix="B20187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="18.73" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40187">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20201">
+    <device id="1" stationing="20.185" position="SOKP vlevo" ppk="R01-D-B20axx00201">
+      <subdevice id="0" type="LED" prefix="B00201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="20.185" position="SOKP vlevo" ppk="R01-D-KZ1xxx00201">
+      <subdevice id="0" type="LED" prefix="F00201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="20.185" position="SOKP vlevo" ppk="R01-D-KZ2xxx40201">
+      <subdevice id="0" type="LED" prefix="A40201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="20.185" position="SOKP vlevo" ppk="R01-D-B26S8c40201">
+      <subdevice id="0" type="LED" prefix="F40201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="20.185" position="SOKP vlevo" ppk="R01-D-B20axx20201">
+      <subdevice id="0" type="LED" prefix="B20201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="20.185" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD60201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="2" type="LD" prefix="LD40201">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX20218">
+    <device id="1" stationing="21.81" position="SOKP vlevo" ppk="R01-D-B20axx00218">
+      <subdevice id="0" type="LED" prefix="B00218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="21.81" position="SOKP vlevo" ppk="R01-D-KZ1xxx00218">
+      <subdevice id="0" type="LED" prefix="F00218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="F00218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="21.81" position="SOKP vlevo" ppk="R01-D-KZ2xxx40218">
+      <subdevice id="0" type="LED" prefix="A40218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="DT" prefix="A40218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="21.81" position="SOKP vlevo" ppk="R01-D-B26S8c40218">
+      <subdevice id="0" type="LED" prefix="F40218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="21.81" position="SOKP vlevo" ppk="R01-D-B20axx20218">
+      <subdevice id="0" type="LED" prefix="B20218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="22" stationing="21.81" position="" ppk="?">
+      <subdevice id="0" type="LD" prefix="LD00218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+      <subdevice id="1" type="LD" prefix="LD40218">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+  </gantry>
+</root>

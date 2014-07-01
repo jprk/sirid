@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <gantry id="R01-R-MX10028">
+    <device id="3">
+      <subdevice id="0">
+        <command validity="60">
+          <symbol>1</symbol>
+        </command>
+      </subdevice>
+    </device>
+  </gantry>
+  <gantry id="R01-R-MX10042">
+    <device id="3">
+      <subdevice id="0">
+        <command validity="60">
+          <symbol>1</symbol>
+        </command>
+      </subdevice>
+    </device>
+  </gantry>
+</root>
