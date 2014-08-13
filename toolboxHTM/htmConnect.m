@@ -17,6 +17,8 @@ function htmConnect ( host, port )
 %
 % Version: $Id$
 
+global HTM_CONNECTION;
+
     import java.net.Socket
     import java.io.*
 
@@ -44,7 +46,7 @@ function htmConnect ( host, port )
             fprintf(1, 'Connected to server\n');
 
             % Set a timeout to the operations on this socket
-            input_socket.setSoTimeout(60000);
+            input_socket.setSoTimeout(120000);
 
             fprintf(1, 'Set timeout\n');
 
@@ -104,7 +106,10 @@ function htmConnect ( host, port )
     message = char(message'); % Data comes out as a column vector
 
     fprintf ( 'Got message: `%s`\n', message );
+    
+    HTM_CONNECTION.inputstream = d_input_stream;
+    HTM_CONNECTION.outputstream = d_output_stream;
             
 end
         
-% ----- END ( htmSetup ) -----
+% ----- END ( htmConnect ) -----

@@ -18,4 +18,48 @@
       </subdevice>
     </device>
   </gantry>
+  <gantry id="R01-R-MX20017">
+    <device id="1">
+      <subdevice id="0">
+        <command validity="60">
+          <symbol>4</symbol>
+        </command>
+      </subdevice>
+    </device>
+    <device id="5">
+      <subdevice id="0">
+        <command validity="60">
+          <symbol>4</symbol>
+        </command>
+      </subdevice>
+    </device>
+    <device id="6">
+      <subdevice id="0">
+        <command validity="60">
+          <symbol>4</symbol>
+        </command>
+      </subdevice>
+    </device>
+    <device id="10">
+      <subdevice id="0">
+        <command validity="60">
+          <symbol>4</symbol>
+        </command>
+      </subdevice>
+    </device>
+    <device id="2">
+      <subdevice id="0">
+        <command validity="60">
+          <symbol>1</symbol>
+        </command>
+      </subdevice>
+    </device>
+    <device id="7">
+      <subdevice id="0">
+        <command validity="60">
+          <symbol>1</symbol>
+        </command>
+      </subdevice>
+    </device>
+  </gantry>
 </root>

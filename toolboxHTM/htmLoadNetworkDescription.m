@@ -88,7 +88,7 @@ end
     
     % Parse the DOM tree into a Matlab structure
     try
-        netStruct = parseChildNodes ( root );
+        netStruct = htmParseChildNodes ( root );
     catch
         error ( ...
             'htmapi:xmlread',...

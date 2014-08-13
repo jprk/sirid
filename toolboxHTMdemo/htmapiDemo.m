@@ -107,7 +107,8 @@ function htmapiDemo()
         netInfo.entranceSections, ...
         'HEADWAY_CONSTANT', ...
         sectionsStats, systemStats, ...
-        netInfo.sections );
+        netInfo.sections, ...
+        '           ' );
    
     % Connect to the gantry server
     htmConnect ( SYSCONFIG.htm_server, SYSCONFIG.htm_port );
@@ -115,15 +116,17 @@ function htmapiDemo()
     % --------------------
     % Create a default control action
     % --------------------
-    gantry.id = 'R01-R-MX10042';    % Gantry server ID
+    gantry.id = 'R01-R-MX20017';    % Gantry server ID
     gantry.device = 1;              % The device on this gantry server
-    gantry.symbol = 1;              % The symbol displayed
+    gantry.subdev = 0;              % The sub-device on this gantry server
+    gantry.symbol = 3;              % The symbol displayed
     gantry.validity = 60;           % The command will clear itself after 60 seconds
     control_set{1} = gantry;
     
-    gantry.id = 'R01-R-MX10042';    % Gantry server ID
-    gantry.device = 3;              % The device on this gantry server
-    gantry.symbol = 1;              % The symbol displayed
+    gantry.id = 'R01-R-MX20017';    % Gantry server ID
+    gantry.device = 5;              % The device on this gantry server
+    gantry.subdev = 0;              % The sub-device on this gantry server
+    gantry.symbol = 3;              % The symbol displayed
     gantry.validity = 60;           % The command will clear itself after 60 seconds
     control_set{2} = gantry;
 
@@ -137,7 +140,60 @@ function htmapiDemo()
         
 		fprintf ( '============================================================ STEP %d\n\n', k );
 
-        % Step 1: Simulate computation of a control action
+        % Step 1: Wait for maximum one hour until data from the
+        % microsimulator arrive 
+		% TODO: This is hardcoded, the `1` should be replaced by the
+        % gantry server count
+        [ res, dets ] = htmReceiveMeasurements(1);
+        if ( res ~= 0 )
+            if res == 1
+                % Clean exit, Aimsun finished
+                fprintf ( '  %s Simulation finished, exitting.\n', ...
+                    datestr ( now, 13 ));
+            else
+                % Something bad happened.
+                fprintf ( 'Error in htmReceiveMeasurements() encountered. Exitting.\n' );
+                cl_res = 1;
+            end
+            break;
+        end
+
+        % Step 2: Process detector data
+        % Loop over signal group data and show them
+        dets_fieldnames = fieldnames(dets);
+        num_gantry_servers = length(dets_fieldnames);
+        fprintf ( ...
+            '           Got data from %d gantry server(s).\n', num_gantry_servers );
+        fprintf ( ...
+            '           Detected vehicle counts, occupancies and speeds:\n' );
+        for i = 1:num_gantry_servers
+            gantry_server_id = dets_fieldnames{i};
+            fprintf ( '             %02d: gantry %s\n', i, gantry_server_id );
+            directions = dets.(gantry_server_id);
+            for d = 1:2
+                if d == 1
+                    fprintf ( '                 left lanes:\n' );
+                else
+                    fprintf ( '                 right lanes:\n' );
+                end
+                % Fetch lane data in a single direction
+                lanes = directions{d};
+                for lane_idx = 1:length(lanes)
+                    % Fetch a single direction
+                    categories = lanes{lane_idx};
+                    if ~isempty(categories)
+                        fprintf ( '                   lane %02d\n', lane_idx );
+                        for cn = 1:length(categories)
+                            dd = categories(cn,:);
+                            fprintf ( '                     cat %d - %2d/%6.2f/%6.2f\n', cn, dd );
+                        end
+                    end
+                end
+            end
+        end
+        
+        % Step 3: Simulate computation of a control action based on the
+        % received data
         fprintf ( ...
             '  %s Simulating computation of a new control action ...\n', ...
             datestr ( now, 13 ));
@@ -146,11 +202,11 @@ function htmapiDemo()
             '  %s Sending the new control to controllers ...\n', ...
             datestr ( now, 13 ));
 
-        % Step 2: Write the new control action to the microsimulator
-        ct_res = htmWriteDataSet ( control_set );
+        % Step 4: Write the new control action to the microsimulator
+        ct_res = htmSendControl ( control_set );
         if ( ct_res ~= 0 )
             % Something bad happened.
-			fprintf ( 'Error in htmWriteData() encountered. Exitting.\n' );
+			fprintf ( 'Error in htmSendControl() encountered. Exitting.\n' );
 			break;
         end
 
@@ -158,46 +214,20 @@ function htmapiDemo()
             '  %s Written new control to the microsimulator\n', ...
             datestr ( now, 13 ));
 
-        % Step 3: Wait for maximum one hour until data from the
-        % microsimulator arrive 
-		[ res, dets ] = htmWaitForData ( 3600, 1 );
-        if ( res ~= 0 )
-            % Something bad happened.
-			fprintf ( 'Error in htmWaitForData() encountered. Exitting.\n' );
-			break;
-        end
-
-        % Step 4: Process detector data
-        % Loop over signal group data and show them
-        fprintf ( ...
-            '           Detected vehicle counts and occupancies:\n' );
-        for i = 1:length(dets)
-            dp = dets{i};
-            fprintf ( '           %02d: gantry %s\n', i, dp.gantry_id );
-            dd = dp.data;
-            for j = 1:length(dd)
-                % Fetch a single detecor record and show it
-                dr = dd{j};
-                fprintf ( ...
-                    '               global time %6d --', ...
-                    dr.global_time );
-                fprintf ( ' %2d/%3d', [ dr.dt_intensity; dr.dt_occupancy] );
-                fprintf ( '\n' );
-            end
-        end
         
         % Query the last section statistics from HTM toolbox
-        stats = htmGetLastSectionStats();
-        
-        statCell{end+1} = stats;
-        save ( 'stat_cell.mat', 'statCell' );
+        % stats = htmGetLastSectionStats();
+        %
+        % statCell{end+1} = stats;
+        % save ( 'stat_cell.mat', 'statCell' );
 
 		k = k+1;
         fprintf ( '\n' );
     end
     
     % Wait for statistical data to be completely written to the disk
-    if ( cl_res == 0 )
+    % if ( cl_res == 0 )
+    if ( false )
         res = htmWaitCompletedLoop ( 1200, 1 );
         if ( ~res )
             fprintf ( 'ERROR - Statistical data not available!\n' );

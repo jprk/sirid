@@ -1,5 +1,5 @@
-function htmSetup ( entrancePath, entranceSectionVec, headway, sectionStatsPath, globalStatsPath, statsSectionMat )
-% R=HTMSETUP(E,EV,H,S,G,SM) sets parameters of the VGS interface.
+function htmSetup ( entrancePath, entranceSectionVec, headway, sectionStatsPath, globalStatsPath, statsSectionMat, prefix )
+% R=HTMSETUP(E,EV,H,S,G,SM) sets parameters of the HTM interface.
 %
 % Parameters:
 %   entrancePath ......... CSV file containing entrance data
@@ -22,7 +22,12 @@ function htmSetup ( entrancePath, entranceSectionVec, headway, sectionStatsPath,
 %
 % Version: $Id$
 
+global HTM_PREFIX;
+
     % Preprocess `statsSectionMat` to sorted vector of section identifiers
     statIds = htmGetSectionStatsIds ( statsSectionMat );
+    
+    % Update the global prefix of debugging outputs
+    HTM_PREFIX = prefix;
         
 % ----- END ( htmSetup ) -----

@@ -33,7 +33,7 @@ try:
         print "waiting for response"
         while True:
             received = sock.recv(1024)
-            print received
+            sys.stdout.write(received)
 finally:
     print "closing socket ..."
     sock.close()

@@ -5,7 +5,7 @@
 # Aimsun extension location programmaticaly. The rest is adopted from
 # Aimsun 7 Scripting documentation.
 #
-# (c) 2013 ÚTIA AVČR
+# (c) 2013, 2014 ÚTIA AVČR
 #
 # Version: $Id$
 #

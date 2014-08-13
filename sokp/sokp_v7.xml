@@ -32,11 +32,11 @@
         <aimsunid>-1</aimsunid>
       </subdevice>
     </device>
-    <device id="21" stationing="1.008" position="" ppk="?">
-      <subdevice id="0" type="LD" prefix="LD90815">
+    <device id="20" stationing="1.008" position="" ppk="?">
+      <subdevice id="0" type="LD">
         <aimsunid>-1</aimsunid>
       </subdevice>
-      <subdevice id="1" type="LD" prefix="LD30815">
+      <subdevice id="1" type="LD">
         <aimsunid>-1</aimsunid>
       </subdevice>
     </device>

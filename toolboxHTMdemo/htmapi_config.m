@@ -34,13 +34,12 @@ if ispc
     % Determine the drive letter (in case the code is installed on a portable
     % drive the drive letter may change on different computers)
     pth = fileparts ( mfilename('fullpath'));
-    dl  = pth(1);
-    pfx = [ dl ':\Dropbox\Dropbox\Development\FD\sirid' ];
+    pfx = [ pth '\..' ];
 
     SYSCONFIG.toolboxHTMdir = [ pfx '\toolboxHTM' ];
     SYSCONFIG.getramHTMdll  = [ pfx '\getramExt_HTM\GetramHTM.dll' ];
     SYSCONFIG.aimsunScenariosDir = [ pfx ];
-    SYSCONFIG.reportDir = [ dl ':\Users\Prikryl\Documents\Reports' ];
+    SYSCONFIG.reportDir = [ 'C:\Users\Prikryl\Documents\Reports' ];
 
     clear pth dl pfx;
 else

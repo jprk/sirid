@@ -6,10 +6,10 @@ import xml.etree.ElementTree as Et
 from collections import defaultdict
 
 SYMBOLS = {
-    'A':  ['Zhasnuto', 'A8 -Nebezpeèí smyku', 'A15 -Práce na silnici', 'A22 -Jiné nebezpeèí', 'A23 - Tvorba kolon',
-           'A24 - Náledí', 'A26 – Mlha', 'A27 – Nehoda'],
-    'B':  ['Zhasnuto', '120', '100', '80', '60'],
-    'F':  ['Zhasnuto', 'Zákaz vjezdu NV', 'Šipka vlevo', 'Šipka vpravo', 'Konec omezení'],
+    'A': ['Zhasnuto', 'A8 -Nebezpeèí smyku', 'A15 -Práce na silnici', 'A22 -Jiné nebezpeèí', 'A23 - Tvorba kolon',
+          'A24 - Náledí', 'A26 – Mlha', 'A27 – Nehoda'],
+    'B': ['Zhasnuto', '120', '100', '80', '60'],
+    'F': ['Zhasnuto', 'Zákaz vjezdu NV', 'Šipka vlevo', 'Šipka vpravo', 'Konec omezení'],
     'EA': ['Zhasnuto', '500m', '1000m', '1500m', '2000m', '2500m', '3000m', '3500m', '4000m', '4500m', '5000m', '5500m',
            '6000m', '6500m', '7000m', '7500m', '8000m', '8500m', '9000m', '9500m', '10000m'],
     'EF': ['Zhasnuto', '3,5t', '6t', '7,5t', '9t', '12t']}
@@ -23,6 +23,19 @@ LANE_ID_TO_STR = {
     3: 'right',
     5: 'middle',
     9: 'left'}
+
+CATEGORY = [
+    {'id': '0', 'type': '-?-', 'description': 'others'},
+    {'id': '1', 'type': 'mot', 'description': 'motorcycle'},
+    {'id': '2', 'type': 'car', 'description': 'car'},
+    {'id': '3', 'type': 'c+t', 'description': 'car_with_trailer'},
+    {'id': '4', 'type': 'van', 'description': 'delivery_van'},
+    {'id': '5', 'type': 'lor', 'description': 'truck'},
+    {'id': '6', 'type': 'h+t', 'description': 'truck_with_trailer'},
+    {'id': '7', 'type': 'trc', 'description': 'semitrailer_truck'},
+    {'id': '8', 'type': 'bus', 'description': 'bus'},
+    {'id': '9', 'type': 'all', 'description': 'all'}]
+
 
 class GantrySubDevice:
     """Represents a single gantry sub-device, that is, a signalling element.
@@ -128,8 +141,9 @@ class GantryWarningSign(GantrySubDevice):
     MESSAGES = ['Zhasnuto', 'A8 -Nebezpeèí smyku', 'A15 -Práce na silnici', 'A22 -Jiné nebezpeèí',
                 'A23 - Tvorba kolon', 'A24 - Náledí', 'A26 – Mlha', 'A27 – Nehoda']
     # Gantry sub-device type
-    TYPE = [ 'LED', 'LED+DT' ]
+    TYPE = ['LED', 'LED+DT']
     PREFIX = 'A'
+
 
 class GantryWarningInfo(GantrySubDevice):
     """Additional information to a warning sign at some position on the gantry display."""
@@ -138,42 +152,61 @@ class GantryWarningInfo(GantrySubDevice):
                 '4500m', '5000m', '5500m', '6000m', '6500m', '7000m', '7500m', '8000m', '8500m',
                 '9000m', '9500m', '10000m']
     # Gantry sub-device type
-    TYPE = [ 'DT' ]
+    TYPE = ['DT']
     # In fact the prefix should be 'EA' but it seems that gantries at SOKP use 'A'
     PREFIX = 'A'
+
 
 class GantrySpeedLimit(GantrySubDevice):
     """Speed limit regulatory sign at some position on the gantry display."""
     # Messages (traffic signs) displayed
     MESSAGES = ['Zhasnuto', '120', '100', '80', '60']
+    # Speed limits corresponding to messages
+    SPEED_LIMITS = [None, 120, 100, 80, 60]
     # Gantry sub-device type
-    TYPE = [ 'LED' ]
+    TYPE = ['LED']
     PREFIX = 'B'
+
+    def __init__(self, prefix, id_sub_device, id_type):
+        """
+
+        :type self: GantryLoopDetector
+        """
+        GantrySubDevice.__init__(self, prefix, id_sub_device, id_type)
+        self.id_lane = int(prefix[1])
+
+    def get_speed_limit(self):
+        """Return a tuple containing speed limit information"""
+        # TODO Figure out how to check which class of vehicles this limit applies to.
+        # For the time being we expect all vehicles to be forced to keep the speed limit.
+        return self.prefix, self.id_lane, self.SPEED_LIMITS[self.message_id], 0
+
 
 class GantryRegulatorySign(GantrySubDevice):
     """Regulatory sign other than a speed limit at some position on the gantry display."""
     # Messages (traffic signs) displayed
     MESSAGES = ['Zhasnuto', 'Zákaz vjezdu NV', 'Šipka vlevo', 'Šipka vpravo', 'Konec omezení']
     # Gantry sub-device type
-    TYPE = [ 'LED', 'LED+DT' ]
+    TYPE = ['LED', 'LED+DT']
     # Gantry sub-device type
     PREFIX = 'F'
+
 
 class GantryRegulatoryInfo(GantrySubDevice):
     """Additional info for a regulatory sign at some position on the gantry display."""
     # Messages (traffic signs) displayed
     MESSAGES = ['Zhasnuto', '3,5t', '6t', '7,5t', '9t', '12t']
     # Gantry sub-device type
-    TYPE = [ 'DT' ]
+    TYPE = ['DT']
     # In fact the prefix should be 'EF' but it seems that gantries at SOKP use 'F'
     PREFIX = 'F'
+
 
 class GantryLoopDetector(GantrySubDevice):
     """Loop detector subdevice that does not display anything on the VMS display."""
 
-    # Gantry sub-device type
-    TYPE = [ 'LD' ]
-    # In fact the prefix should be 'LD' but we compare only the first character
+    TYPE = ['LD4']
+    # In fact the prefix should be 'LD4' but we compare only the first character
     PREFIX = 'L'
 
     def __init__(self, prefix, id_sub_device, id_type):
@@ -182,14 +215,16 @@ class GantryLoopDetector(GantrySubDevice):
         :type self: GantryLoopDetector
         """
         GantrySubDevice.__init__(self, prefix, id_sub_device, id_type)
-        self.id_lane = int(prefix[2])
+        self.id_lane = int(prefix[3])
         self.str_lane = LANE_ID_TO_STR[self.id_lane]
         self.has_message_text = False
 
+
 class GantryDevice:
     """A single gantry device: a sign, a sign with an info table, text display, ..."""
+
     def __init__(self, id_device, ppk):
-        self.id  = id_device
+        self.id = id_device
         self.ppk = ppk
         self.sub_devices = dict()
 
@@ -205,8 +240,9 @@ class GantryDevice:
         """
         # As the GantrySubDevice object needs id, type, and prefix to initialise, we cannot use a dict
         # sub-class or defaultdict().
-        if id_sub_device in self.sub_devices :
-            raise TypeError("Gantry device %s (id:%d) already has a sub-device with id %d" % (self.ppk, self.id, id_sub_device))
+        if id_sub_device in self.sub_devices:
+            raise TypeError(
+                "Gantry device %s (id:%d) already has a sub-device with id %d" % (self.ppk, self.id, id_sub_device))
         else:
             # Create a new device
             sub_device = self.sub_devices[id_sub_device] = GantrySubDevice.factory(prefix, id_sub_device, id_type)
@@ -220,6 +256,15 @@ class GantryDevice:
         """
         return sorted(self.sub_devices)
 
+    def has_sub_device(self, id_sub_device):
+        """
+
+        :param id_sub_device:
+        :rtype : bool
+        :return:
+        """
+        return id_sub_device in self.sub_devices
+
     def get_sub_device(self, id_sub_device):
         """
 
@@ -230,8 +275,10 @@ class GantryDevice:
         """
         return self.sub_devices[id_sub_device]
 
+
 class Gantry:
     "Object representation of a single highway gantry holding several signalling elements."
+
     def __init__(self, id_gantry):
         self.id = id_gantry
         self.devices = dict()
@@ -247,8 +294,8 @@ class Gantry:
         """
         # As the GantryDevice object needs id and ppk to initialise, we cannot use a dict
         # sub-class or defaultdict().
-        if id_device in self.devices :
-            raise TypeError("Gantry %s already has a sub-device %d with ppk %s" % (self.id, id_device, ppk))
+        if id_device in self.devices:
+            raise TypeError("Gantry %s already has a device %d with ppk %s" % (self.id, id_device, ppk))
         else:
             # Create a new device
             device = self.devices[id_device] = GantryDevice(id_device, ppk)
@@ -256,7 +303,7 @@ class Gantry:
 
     def has_device(self, id_device):
         return id_device in self.devices
-        
+
     def get_device_id_list(self):
         """
 
@@ -275,6 +322,7 @@ class Gantry:
         """
         return self.devices[id_device]
 
+
 class gantrydict(dict):
     """An extension to dict() that creates a gantry object in case it does not exist.
     In this case we need to pass the key of the missing entry to the constructor of
@@ -282,28 +330,62 @@ class gantrydict(dict):
 
     See http://stackoverflow.com/questions/7963755/using-the-key-in-collections-defaultdict
     """
+
     def __missing__(self, key):
         value = self[key] = Gantry(key)
         return value
 
+
 class GantryServer:
     """Object representation of a single highway gantry that holds a set of variable message
     signs.
+
+    Device is local to a gantry server.
+    Sub-devices are local to gantries.
 
     The gantry object maintains a state of all its subordinate VMSs and allows for modification
     of the state and its conversion to a meaningful text representation."""
 
     def __init__(self, id_gantry_server):
         self.id = id_gantry_server
-        #self.state = defaultdict(dict)
+        # self.state = defaultdict(dict)
         #self.prefixes = dict()
         #self.ppks = defaultdict(dict)
-        self.devices = dict()
+        self.gantry_devices = defaultdict(list)
         self.gantries = gantrydict()
         #self.gantry_names = list()
         #self.gantry_devices = dict()
         self.gantry_pos_re = re.compile(r"[A-Z]+(\d)(\d\d\d\d)")
         self.gantry_neg_re = re.compile(r"[A-Z]+(\d)(\dM\d\d)")
+
+    def locate_sub_device(self, id_device, id_sub_device):
+        """Return an instance of GantrySubDevice for the given (device, sub-device) pair.
+
+        As the GantryServer instance may be responsible for several physical gantries, represented
+        by Gantry instances, and as a GantryDevice, although unique for a gantry server, may span
+        over several physical gantries (LD4 devices, for example, have a global device id 20 and
+        a sub-device 0 on one physical gantry, while sub-device 1 resides on a gantry located in
+        the opposite direction), several partial instances of the same GantryDevice may exist,
+        each of them holding a sub-set of the sub-devices specified for the given device. The
+        purpose of this method is to go through all Gantry instances, locate the instance where
+        the (device, sub-device) pair exists and return the GantrySubDevice instance corresponding
+        to the pair.
+
+        :rtype : GantrySubDevice
+        :param id_device: int
+        :param id_sub_device: int
+        """
+        sub_device = None
+        for gantry in self.gantry_devices[id_device]:
+            device = gantry.get_device(id_device)
+            if device.has_sub_device(id_sub_device):
+                sub_device = device.get_sub_device(id_sub_device)
+                break
+        if not sub_device:
+            raise KeyError("Unknown (device, sub-device) pair ({:d},{:d}) on gantry server {:s}".format(
+                id_device, id_sub_device, self.id))
+        return sub_device
+
 
     def add_sub_device(self, id_device, ppk, id_sub_device, id_type, prefix):
         # Match the regular expression describing the device prefix which corresponds to gantry id
@@ -320,22 +402,27 @@ class GantryServer:
         # lanes in the direction of infrastructure stationing, even lane numbers are used for
         # devices installed in right-hand lanes. Together with the next four stationing digits
         # the device prefix forms the numeric part of gantry name
-        id_gantry = 'P' + str(int(m.group(1))%2) +  m.group(2)
+        id_gantry = 'P' + str(int(m.group(1)) % 2) + m.group(2)
         # Get the gantry object corresponding to `id_gantry`. This will create an empty Gantry
         # object in case that self.gantries does not hold the given id.
         gantry = self.gantries[id_gantry]
         # Get the gantry device object
+        # TODO: A single device on a gantry server is now supposed to exist only on a singe gantry. However, this
+        # is not true in reality, at least LD4 boards occupy a single device 20 that exists across all gantries
         if gantry.has_device(id_device):
             device = gantry.get_device(id_device)
         else:
             device = gantry.add_device(id_device, ppk)
             # We need a direct link from gantry server to a device
-            if id_device in self.devices:
-                raise ValueError('Gantry server %s already has device id %d (stored ppk `%s`, given `%s`' % (self.id, id_device, self.devices[id_device].ppk, ppk))
-            self.devices[id_device] = device
+            # TODO: original: if id_device in self.devices: because we thought that a device may exist only on
+            # single gantry.
+            # if id_device in gantry.devices:
+            # raise ValueError('Gantry server %s already has device id %d (stored ppk `%s`, given `%s`)' % (self.id, id_device, self.devices[id_device].ppk, ppk))
+            # Device could be distributed over several gantries (detector loops, for example)
+            self.gantry_devices[id_device].append(gantry)
         # Add a sub-device object
         sub_device = device.add_sub_device(id_sub_device, id_type, prefix)
-        #self.state[device][sub_device] = ''
+        # self.state[device][sub_device] = ''
         #self.prefixes[device] = prefix
         #self.ppks[device][sub_device] = ppk
         #self.devices = self.state.keys()
@@ -349,12 +436,12 @@ class GantryServer:
             if device_node.tag != 'device':
                 raise ValueError('Expected <device> tag, got <%s>' % device_node.tag)
             id_device = int(device_node.attrib['id'])
-            device = self.devices[id_device]
             for sub_device_node in device_node:
                 if sub_device_node.tag != 'subdevice':
                     raise ValueError('Expected <subdevice> tag, got <%s>' % sub_device_node.tag)
                 id_sub_device = int(sub_device_node.attrib['id'])
-                sub_device = device.get_sub_device(id_sub_device)
+                # Device may span several gantries. We assume that a sub-device is local to the given gantry.
+                sub_device = self.locate_sub_device(id_device,id_sub_device)
                 if len(sub_device_node) != 1:
                     raise ValueError('Node <subdevice> has more than one child node')
                 # Sub-device node contains only a single child node. This node should be a
@@ -373,9 +460,8 @@ class GantryServer:
     def process_command(self, command):
         """Process a binary command specified as tuple"""
         id_device, id_sub_device, id_message, validity = command
-        # The `id` attribute contains gantry server name
-        device = self.devices[id_device]
-        sub_device = device.get_sub_device(id_sub_device)
+        # Device may span several gantries. We assume that a sub-device is local to the given gantry.
+        sub_device = self.locate_sub_device(id_device,id_sub_device)
         sub_device.set_message_id(id_message)
 
     def get_gantry_messages(self):
@@ -400,6 +486,53 @@ class GantryServer:
                         text += "%s/%s - %s\n" % (sub_device.get_prefix(), device.ppk, sub_device.get_message_text())
             gantry_messages[id_gantry] = text
         return gantry_messages
+
+
+    def get_speed_limits(self):
+        """Return actual speed limit data.
+
+        The returned dictionary is indexed by gantry ids. Every dictionary element is a list of speed limit
+        data that is applicable to devices of that particular gantry. Every list element is a tuple containing
+        a sign id, lane it occupies, speed limit in kmph and vehicle class it should be applied to (0 for all
+        vehicles."""
+        speed_limits = defaultdict(list)
+        for id_gantry in self.gantries:
+            gantry = self.gantries[id_gantry]
+            for id_device in gantry.get_device_id_list():
+                device = gantry.get_device(id_device)
+                for id_sub_device in device.get_sub_device_id_list():
+                    sub_device = device.get_sub_device(id_sub_device)
+                    # Sub-devices are of different type, we are explicitly interested in speed limits here.
+                    if isinstance(sub_device, GantrySpeedLimit):
+                        speed_limits[id_gantry].append(sub_device.get_speed_limit())
+        return speed_limits
+
+
+    def get_lane_closures(self):
+        """Return a list of lane closures.
+
+        The returned dictionary is indexed by gantry ids. Every dictionary element is a list of speed limit
+        data that is applicable to devices of that particular gantry. Every list element is a tuple containing
+        a sign id, lane it occupies, speed limit in kmph and vehicle class it should be applied to (0 for all
+        vehicles."""
+        lane_closures = defaultdict(list)
+        for id_gantry in self.gantries:
+            gantry = self.gantries[id_gantry]
+            for id_device in gantry.get_device_id_list():
+                device = gantry.get_device(id_device)
+                for id_sub_device in device.get_sub_device_id_list():
+                    sub_device = device.get_sub_device(id_sub_device)
+                    # Sub-devices are of different type, we are explicitly interested in speed limits here.
+                    if isinstance(sub_device, GantryRegulatorySign):
+                        closure_info = sub_device.get_lane_closure()
+                        if closure_info:
+                            lane_closures[id_gantry].append(closure_info)
+        return lane_closures
+
+
+    def get_gantry_labels(self):
+        """Return a list of gantry names for the current gantry server"""
+        return self.gantries.keys()
 
     def __str__(self):
         """Turn the internal state information into a human-readable string"""
@@ -431,6 +564,7 @@ class GantryServer:
 if __name__ == "__main__":
     tree = Et.parse('sokp.xml')
     root = tree.getroot()
+    print "The root erlement of the file is " + repr(root)
 
     gantries = {}
     gantry_ld_map = {}
@@ -450,23 +584,33 @@ if __name__ == "__main__":
                 sub_instance = gantry_server.add_sub_device(id_device, ppk, id_sub_device, id_type, prefix)
                 # We need a mapping from detector id to gantry, device, subdevice
                 if isinstance(sub_instance, GantryLoopDetector):
-                    gantry_ld_map[prefix] = (id_gantry, id_device, id_sub_device, sub_instance.id_lane, sub_instance.str_lane)
+                    for loop_detector in sub_device:
+                        print '       ', loop_detector.tag, loop_detector.attrib
+                        id_lane = int(loop_detector.attrib['id'])
+                        position = loop_detector.attrib['position']
+                        prefix = loop_detector.attrib['prefix']
+                        gantry_ld_map[prefix] = (id_gantry, id_device, id_sub_device, id_lane, position, prefix)
         gantries[id_gantry] = gantry_server
         print gantry_server.get_gantry_messages()
 
     print gantry_ld_map
     print str(gantries)
 
-    print gantries['R01-R-MX10028'].get_gantry_messages()
-    print gantries['R01-R-MX10042'].get_gantry_messages()
+    print gantries['R01-R-MX20017'].get_gantry_messages()
 
     # This is a template for a GantryInterface function for processing commands
     tree = Et.parse('gantry_command.xml')
     root = tree.getroot()
     for gantry_node in root:
         id_gantry = gantry_node.attrib['id']
-        gantry_server = gantries[id_gantry]
-        gantry_server.process_xml_commands(gantry_node)
+        gantry_server = None
+        try:
+            gantry_server = gantries[id_gantry]
+        except KeyError as e:
+            print 'ERROR: Got command for non-existing gantry server '+id_gantry
+        if gantry_server:
+            gantry_server.process_xml_commands(gantry_node)
 
-    print gantries['R01-R-MX10028'].get_gantry_messages()
-    print gantries['R01-R-MX10042'].get_gantry_messages()
+    print gantries['R01-R-MX20017'].get_gantry_messages()
+    print gantries['R01-R-MX20017'].get_gantry_labels()
+    print gantries['R01-R-MX20017'].get_speed_limits()
