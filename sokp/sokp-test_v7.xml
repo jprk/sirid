@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+  <gantry id="R01-R-MX20017">
+    <device id="1" stationing="0.0" position="" ppk="R01-D-B20axx00017">
+      <subdevice id="0" type="LED" prefix="B00017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="2" stationing="0.0" position="" ppk="R01-D-KZ1xxx00017">
+      <subdevice id="0" type="LED+DT" prefix="F00017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="3" stationing="0.0" position="" ppk="R01-D-KZ2xxx40017">
+      <subdevice id="0" type="LED+DT" prefix="A40017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="4" stationing="0.0" position="" ppk="R01-D-B26S8c40017">
+      <subdevice id="0" type="LED" prefix="F40017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="5" stationing="0.0" position="" ppk="R01-D-B20axx20017">
+      <subdevice id="0" type="LED" prefix="B20017">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="6" stationing="0.0" position="" ppk="R01-D-B20axx90018">
+      <subdevice id="0" type="LED" prefix="B90018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="7" stationing="0.0" position="" ppk="R01-D-KZ1xxx90018">
+      <subdevice id="0" type="LED+DT" prefix="F90018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="8" stationing="0.0" position="" ppk="R01-D-KZ2xxx30018">
+      <subdevice id="0" type="LED+DT" prefix="A30018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="9" stationing="0.0" position="" ppk="R01-D-B26S8c30018">
+      <subdevice id="0" type="LED" prefix="F30018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="10" stationing="0.0" position="" ppk="R01-D-B20axx10018">
+      <subdevice id="0" type="LED" prefix="B10018">
+        <aimsunid>-1</aimsunid>
+      </subdevice>
+    </device>
+    <device id="20" type="LD4" stationing="0.0" position="" ppk="?">
+      <subdevice id="0" type="LD4" prefix="LDX00017"><!-- identifier LOOP@0017 added to mark the detector group -->
+        <lane id="0" type="LD4" position="left" prefix="LD00017">
+          <aimsunid>-1</aimsunid>
+        </lane>
+        <lane id="4" type="LD4" position="right" prefix="LD40017">
+          <aimsunid>-1</aimsunid>
+        </lane>
+      </subdevice>
+      <subdevice id="1" type="LD4" prefix="LDX10018"><!-- identifier LOOP@0017 added to mark the detector group -->
+        <lane id="3" type="LD4" position="right" prefix="LD30018">
+          <aimsunid>-1</aimsunid>
+        </lane>
+        <lane id="9" type="LD4" position="left" prefix="LD90018">
+          <aimsunid>-1</aimsunid>
+        </lane>
+      </subdevice>
+    </device>
+  </gantry>
+</root>

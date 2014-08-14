@@ -226,8 +226,8 @@ def AAPILoad():
         #AKIPrintString ( "libXSLT version: %d.%d.%d" % et.LIBXSLT_VERSION )
         #AKIPrintString ( "lxml version: %d.%d.%d.%d" % et.LXML_VERSION )
         #
-        #tree = Et.parse(os.path.join(mod_dir, '../sokp/sokp_v7.xml'))
-        tree = Et.parse(os.path.join(mod_dir, 'sokp.xml'))
+        tree = Et.parse(os.path.join(mod_dir, '../sokp/sokp_v7.xml'))
+        #tree = Et.parse(os.path.join(mod_dir, 'sokp.xml'))
         root = tree.getroot()
         AKIPrintString("sirid.xml root element: &gt;" + repr(root)[1:-1] + "&lt;")
 
