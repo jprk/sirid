@@ -5,6 +5,7 @@ import sys
 import codecs
 
 HOST, PORT = "localhost", 9999
+HOST, PORT = "192.168.254.222", 9999
 xmlblob = codecs.open ( sys.argv[1], 'r', 'utf-8' )
 datalist = xmlblob.readlines()
 data = ''.join(datalist)

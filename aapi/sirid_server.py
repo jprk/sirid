@@ -28,9 +28,9 @@ AIMSUN_PACKETCOMM = None
 # @type str
 LAST_MEASUREMENTS = None
 # @type str
-SIMULATION_READY = '<?xml version="1.0" encoding="UTF-8" ?><gantry msg="simulation_ready"></gantry>'
+SIMULATION_READY = '<?xml version="1.0" encoding="UTF-8" ?><root><gantry msg="simulation_ready"/></root>'
 # @type str
-SIMULATION_FINISHED = '<?xml version="1.0" encoding="UTF-8" ?><gantry msg="simulation_finished"></gantry>'
+SIMULATION_FINISHED = '<?xml version="1.0" encoding="UTF-8" ?><root><gantry msg="simulation_finished"/></root>'
 # @type ThreadLock
 RECEIVER_LOCK = threading.Lock()
 # @type ThreadLock
@@ -94,9 +94,10 @@ def aimsun_receiver():
                 (det_type, det_name, prefix, str_lane, data)
 
         xml_string = ''
+        envelope = Et.Element('root')
         for id_gantry_server in gantry_server:
-            # Create root element
-            root = Et.Element('gantry', attrib={'msg': 'long_status'})
+            # Create root element of the gantry server packet
+            root = Et.SubElement(envelope, 'gantry', attrib={'msg': 'long_status', 'id': id_gantry_server})
             print 'gantry server:', id_gantry_server
             seq_nr_node = Et.SubElement(root, 'seq_nr')
             seq_nr_node.text = str(SEQUENCE_NR)
@@ -133,11 +134,11 @@ def aimsun_receiver():
                             occup_node.text = str(float(occup[i]))
                             print "    [%d]: %10f %10f %10f" % (i, count[i], speed[i], occup[i])
 
-            # See also http://pymotw.com/2/xml/etree/ElementTree/create.html for information about pretty-printing
-            minified_str = Et.tostring(root, 'UTF-8')
-            reparsed = minidom.parseString(minified_str)
-            xml_with_text_indents = reparsed.toprettyxml(indent="  ")
-            xml_string += MINIDOM_TEXT_RE.sub('>\g<1></', xml_with_text_indents)
+        # See also http://pymotw.com/2/xml/etree/ElementTree/create.html for information about pretty-printing
+        minified_str = Et.tostring(envelope, 'UTF-8')
+        reparsed = minidom.parseString(minified_str)
+        xml_with_text_indents = reparsed.toprettyxml(indent="  ")
+        xml_string += MINIDOM_TEXT_RE.sub('>\g<1></', xml_with_text_indents)
 
         # Copy the result out to a global string variable. Yuck.
         # The global is needed due to possible "GET_LONG_STATUS" request from the client.
@@ -196,7 +197,7 @@ def start_aimsun(is_synchronous=False):
     print "Aimsun is located in `%s`" % home_dir
     aimsun_exe = "Aimsun.exe"
     aimsun_path = os.path.join(home_dir, aimsun_exe)
-    # This starts Aimsun as a seaprate process and waits for it os become ready
+    # This starts Aimsun as a separate process and waits for it to become ready
     pid = os.spawnl(os.P_NOWAIT, aimsun_path, aimsun_exe, "-script", "aimsun_init_replication_v7.py",
                     "../sokp/sokp_v7.ang", "31334", "aapi_gantry.py")
     print "** Aimsun started as process %d, waiting for ping" % pid
@@ -317,7 +318,8 @@ def process_xml_message(root, is_synchronous):
     elif root.tag == 'gantry' and root.attrib['msg'] == 'get_long_status':
         process_get_long_status(root)
     else:
-        raise TypeError('Unsupported message type')
+        stdout_logger.error("Unsupported message " + Et.tostring(root,' UTF-8'))
+        # raise TypeError('Unsupported message type')
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
@@ -444,6 +446,7 @@ class GantryRequest(SocketServer.StreamRequestHandler):
 
 if __name__ == "__main__":
     HOST, PORT = "127.0.0.1", 9999
+    # HOST, PORT = "192.168.254.222", 9999
 
     # Check Python interpreter version. The supported version is 2.6.x
     if sys.version_info[0] != 2 or sys.version_info[1] != 6:

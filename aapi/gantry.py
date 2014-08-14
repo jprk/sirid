@@ -36,6 +36,18 @@ CATEGORY = [
     {'id': '8', 'type': 'bus', 'description': 'bus'},
     {'id': '9', 'type': 'all', 'description': 'all'}]
 
+# The elements on the ring have different stationing format: some use 0Mxx for -x.y kilimeters, some set zero
+# as 82.5 km ... and moreover, some elements have different stationing in positive and negative notation,
+# probably due to some copy-and-pase errors.
+STATIONING_TRANSLATION = {
+    '0M10': '0815',
+    '0M12': '0813',
+    '0M28': '0797',
+    '0M27': '0797',
+    '0M42': '0783',
+    '0M44': '0781',
+    '0M54': '0771',
+    '0M55': '0770'}
 
 class GantrySubDevice:
     """Represents a single gantry sub-device, that is, a signalling element.
@@ -398,11 +410,18 @@ class GantryServer:
             # In case of no match raise an error
             if not m:
                 raise ValueError("device prefix does not match template")
-        # The first digit matched is the lane number. Odd lane numbers correspond to left-hand
-        # lanes in the direction of infrastructure stationing, even lane numbers are used for
-        # devices installed in right-hand lanes. Together with the next four stationing digits
-        # the device prefix forms the numeric part of gantry name
-        id_gantry = 'P' + str(int(m.group(1)) % 2) + m.group(2)
+            else:
+                # The first digit matched is the lane number. Odd lane numbers correspond to left-hand
+                # lanes in the direction of infrastructure stationing, even lane numbers are used for
+                # devices installed in right-hand lanes. Together with the next four stationing digits
+                # the device prefix forms the numeric part of gantry name
+                id_gantry = 'P' + str(int(m.group(1)) % 2) + STATIONING_TRANSLATION[m.group(2)]
+        else:
+            # The first digit matched is the lane number. Odd lane numbers correspond to left-hand
+            # lanes in the direction of infrastructure stationing, even lane numbers are used for
+            # devices installed in right-hand lanes. Together with the next four stationing digits
+            # the device prefix forms the numeric part of gantry name
+            id_gantry = 'P' + str(int(m.group(1)) % 2) + m.group(2)
         # Get the gantry object corresponding to `id_gantry`. This will create an empty Gantry
         # object in case that self.gantries does not hold the given id.
         gantry = self.gantries[id_gantry]
