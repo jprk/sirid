@@ -28,9 +28,9 @@ AIMSUN_PACKETCOMM = None
 # @type str
 LAST_MEASUREMENTS = None
 # @type str
-SIMULATION_READY = '<?xml version="1.0" encoding="UTF-8" ?><root><gantry msg="simulation_ready"/></root>'
+SIMULATION_READY = '<?xml version="1.0" encoding="UTF-8" ?><root msg="simulation_ready"></root>'
 # @type str
-SIMULATION_FINISHED = '<?xml version="1.0" encoding="UTF-8" ?><root><gantry msg="simulation_finished"/></root>'
+SIMULATION_FINISHED = '<?xml version="1.0" encoding="UTF-8" ?><root msg="simulation_finished"></root>'
 # @type ThreadLock
 RECEIVER_LOCK = threading.Lock()
 # @type ThreadLock
@@ -94,7 +94,7 @@ def aimsun_receiver():
                 (det_type, det_name, prefix, str_lane, data)
 
         xml_string = ''
-        envelope = Et.Element('root')
+        envelope = Et.Element('root', attrib={'msg': 'long_status'})
         for id_gantry_server in gantry_server:
             # Create root element of the gantry server packet
             root = Et.SubElement(envelope, 'gantry', attrib={'msg': 'long_status', 'id': id_gantry_server})
@@ -230,8 +230,10 @@ def start_aimsun(is_synchronous=False):
         print '   Started receiver thread'
         # Report back to the sender
         if is_synchronous:
+            print '   Sending SIMULATION_READY to the client'
             REQUEST_WFILE.write(SIMULATION_READY)
             REQUEST_WFILE.flush()
+            print '   Sent XML', SIMULATION_READY
         return True
 
 
