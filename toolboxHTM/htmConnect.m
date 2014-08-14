@@ -25,7 +25,6 @@ global HTM_CONNECTION;
     number_of_retries = 20;
     retry        = 0;
     input_socket = [];
-    message      = [];
 
     while true
 
@@ -83,33 +82,24 @@ global HTM_CONNECTION;
         
     %
     
+    HTM_CONNECTION.inputstream = d_input_stream;
+    HTM_CONNECTION.outputstream = d_output_stream;
+            
     fprintf ( 'Waiting for gantry server response ...\n' );
     
-    % data_reader = DataReader(d_input_stream);
-    b = 0;
-    chunk = zeros(1,2048,'uint8');
-    chunk_len = 0;
-    while char(b) ~= '>'
-        b = d_input_stream.readByte();
-        chunk_len = chunk_len + 1;
-        chunk(chunk_len) = b;
-    end
+    xml_string = htmReceiveXML('</root>');
+    msg_len = length(xml_string);
+    
+    fprintf ( 'Got %d bytes.\n', msg_len);
 
-    fprintf ( 'Got %d bytes.\n', chunk_len );
-
-    if chunk_len == 0
+    if msg_len == 0
         error ( ...
             'htmapi:response', ...
             'Invalid response of gantry server to `get_long_status`.' );
     end
 
-    message = char(message'); % Data comes out as a column vector
-
-    fprintf ( 'Got message: `%s`\n', message );
+    fprintf ( 'Got message: `%s`\n', xml_string );
     
-    HTM_CONNECTION.inputstream = d_input_stream;
-    HTM_CONNECTION.outputstream = d_output_stream;
-            
 end
         
 % ----- END ( htmConnect ) -----
