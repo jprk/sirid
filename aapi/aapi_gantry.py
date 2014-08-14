@@ -155,11 +155,13 @@ def change_vms_text(gantry_server_id_set):
             AKIPrintString("cmd :: changing vms text on %s/%s" % (gantry_server_id, gantry_id))
             logger.debug("change_vms_text(): changing text on %s/%s" % (gantry_server_id, gantry_id))
             # Convert the gantry object name to the numerical object id
-            id_gantry_obj = GLOBALS.gantry_obj_id[gantry_id]
-            # Display the messages
-            ANGConnSetAttributeValueStringA(
-                GLOBALS.vms_message_att, id_gantry_obj, message_dict[gantry_id])
-
+            try:
+                id_gantry_obj = GLOBALS.gantry_obj_id[gantry_id]
+                # Display the messages
+                ANGConnSetAttributeValueStringA(
+                    GLOBALS.vms_message_att, id_gantry_obj, message_dict[gantry_id])
+            except KeyError:
+                logger.exception('unknown object id for gantry %s' % gantry_id)
 
 def apply_speed_limit(gantry_server_id_set):
     """Apply the speed limit for lanes following the gantry"""
@@ -252,7 +254,11 @@ def AAPILoad():
                     except KeyError:
                         sub_device_description = ''
                     prefix = sub_device.attrib['prefix']
-                    sub_instance = gantry_server.add_sub_device(id_device, ppk, id_sub_device, sub_device_type, prefix)
+                    try:
+                        sub_instance = gantry_server.add_sub_device(id_device, ppk, id_sub_device, sub_device_type, prefix)
+                    except ValueError as e:
+                        logger.exception('cannot create sub_instance, ignoring it')
+                        continue
                     # We need a mapping from detector id to gantry, device, subdevice
                     if isinstance(sub_instance, GantryLoopDetector):
                         for loop_detector in sub_device:
@@ -273,9 +279,11 @@ def AAPILoad():
                 ushort_label = AKIConvertFromAsciiString(gantry_label)
                 object_id = ANGConnGetObjectId(ushort_label, True)
                 if object_id < 0:
-                    raise KeyError("Gantry label '%s' not found, error code %d" % (gantry_label,object_id))
-                GLOBALS.gantry_obj_id[gantry_label] = object_id
-                logger.debug('gantry label %s is Aimsun object %d' % (gantry_label, object_id))
+                    logger.error ("Gantry label '%s' not found, error code %d" % (gantry_label,object_id))
+                    # raise KeyError("Gantry label '%s' not found, error code %d" % (gantry_label,object_id))
+                else :
+                    GLOBALS.gantry_obj_id[gantry_label] = object_id
+                    logger.debug('gantry label %s is Aimsun object %d' % (gantry_label, object_id))
             # Initial setup of VMS messages to their default values will be done in AAPIInit().
             # #print gantry_server.get_gantry_messages()
 

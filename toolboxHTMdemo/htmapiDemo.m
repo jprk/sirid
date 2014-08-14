@@ -124,9 +124,9 @@ function htmapiDemo()
     control_set{1} = gantry;
     
     gantry.id = 'R01-R-MX20017';    % Gantry server ID
-    gantry.device = 5;              % The device on this gantry server
+    gantry.device = 5;              % The device on this gantry server (speed limit)
     gantry.subdev = 0;              % The sub-device on this gantry server
-    gantry.symbol = 3;              % The symbol displayed
+    gantry.symbol = 3;              % The symbol displayed (80 km/h)
     gantry.validity = 60;           % The command will clear itself after 60 seconds
     control_set{2} = gantry;
 

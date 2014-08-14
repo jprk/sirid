@@ -34,10 +34,11 @@ class GantryInterface :
         self._qin  = Queue.Queue()
         self._qout = Queue.Queue()
         self._socket = None
-        self._is_synchronous = True
+        self._is_synchronous = False
 
     def set_socket(self, sirid_socket):
         self._socket = sirid_socket
+        self._packetcomm = packet.PacketCommunicator(sirid_socket, "aapi_gantry.interface")
 
     def get_command ( self ) :
         logger.debug("get_command()")
@@ -59,15 +60,19 @@ class GantryInterface :
             while not self._qout.empty():
                 measurements = self._qout.get_nowait()
                 data = pickle.dumps(measurements, -1)
-                msg_str = "%05d" % len(data)
-                if len(msg_str) != 5:
-                    logger.debug("EXCEPTION: msg_str=`%s`", msg_str)
-                    raise ValueError("Message length should be represented by five characters")
-                logger.debug("sending message length as `%s`" % msg_str)
-                self._socket.sendall(msg_str)
-                logger.debug("sending measurements")
-                self._socket.sendall(data)
-                logger.debug("sent measurements")
+                self._packetcomm.packet_send(data)
+
+    def receive_data_packet(self):
+        return self._packetcomm.packet_receive()
+
+    def send_data_packet(self, data):
+        self._packetcomm.packet_send(data)
+
+    def receive_configuration_data(self):
+        logger.debug("receiving configuration data")
+        data = self.receive_data_packet()
+        config = pickle.loads(data)
+        self._is_synchronous = config['synchronous']
 
     def is_synchronous(self):
         return self._is_synchronous
@@ -99,6 +104,23 @@ def gantry_socket_thread(interface):
     tlogger = logging.getLogger('aapi_gantry.interface.thread')
     tlogger.debug("started gantry_socket_thread(%s)" % repr(interface))
 
+
+    t = threading.current_thread()
+    AKIPrintString("%s: gantry_socket_server thread started" % t.name)
+    # Send response to the SIRID server process that we are up and running
+    sirid_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sirid_socket.connect(('localhost', 1251))
+
+    interface.set_socket(sirid_socket)
+    interface.send_data_packet("AIMSUN_UP_AND_RUNNING")
+
+    AKIPrintString("%s: sent message to sirid server" % t.name)
+    tlogger.debug("sent AIMSUN_UP_AND_RUNNING, waiting on configuration data")
+
+    interface.receive_configuration_data()
+
+    tlogger.debug("got configuration data")
+
     if interface.is_synchronous():
         # For the synchronous operation mode we have to lock the execution of Aimsun after sending detector data
         if LOCK.locked():
@@ -108,20 +130,11 @@ def gantry_socket_thread(interface):
             LOCK.acquire()
             logger.debug("Aimsun lock acquired")
 
-
-    t = threading.current_thread()
-    AKIPrintString("%s: gantry_socket_server thread started" % t.name)
-    # Send response to the SIRID server process that we are up and running
-    sirid_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sirid_socket.connect(('localhost', 1251))
-    sirid_socket.sendall('AIMSUN_UP_AND_RUNNING')
-    AKIPrintString("%s: sent message to sirid server" % t.name)
-    tlogger.debug("sent AIMSUN_UP_AND_RUNNING, waiting on configuration data")
-
-    interface.set_socket(sirid_socket)
-
     # Now enter the loop processing commands
+    tlogger.debug("entering the main loop")
     while True:
+
+        data = interface.receive_data_packet()
 
         if data == '@LOCK':
             AKIPrintString("%s: locking other threads" % t.name)

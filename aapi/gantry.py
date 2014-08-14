@@ -70,7 +70,7 @@ class GantrySubDevice:
         elif GantryLoopDetector.is_acceptable(prefix, id_type):
             return GantryLoopDetector(prefix, id_sub_device, id_type)
         else:
-            raise ValueError('incompatible prefix and type of gantry sub-device')
+            raise ValueError('incompatible prefix (%s) and type (%s) of gantry sub-device' % (prefix, id_type))
 
     # This is used to find whether the combination of id_type and prefix can be used to create
     # the class in concern

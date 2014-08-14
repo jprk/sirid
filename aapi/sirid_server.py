@@ -13,6 +13,7 @@ import pickle
 import gantry  # needed for CATEOGRY definition list
 import re  # needed for re-formatting minidom output (only for Python <= 2.6
 import packet
+import logging
 
 # @type boolean
 AIMSUN_RUNNING = False
@@ -41,6 +42,20 @@ SEQUENCE_NR = 1
 # See http://stackoverflow.com/questions/749796/pretty-printing-xml-in-python
 MINIDOM_TEXT_RE = re.compile('>\n\s+([^<>\s].*?)\n\s+</', re.DOTALL)
 
+LOGGER_NAME = "sirid_server"
+
+stdout_logger = logging.getLogger(LOGGER_NAME)
+stdout_logger.setLevel(logging.DEBUG)
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+# Add the handler to the logger
+stdout_logger.addHandler(ch)
+
+stdout_logger.debug("stdout logger")
 
 def recursive_defaultdict():
     return defaultdict(recursive_defaultdict)
@@ -48,53 +63,16 @@ def recursive_defaultdict():
 
 def aimsun_receiver():
     global LAST_MEASUREMENTS
-    global AIMSUN_DATA_SOCKET
+    global AIMSUN_PACKETCOMM
     global SEQUENCE_NR
     global AIMSUN_RUNNING
-    while True:
-        data_recv = None
-        try:
-            # First portion is the length as 5 digit integer
-            head_len = 0
-            data = ''
-            while head_len < 5:
-                data_recv = AIMSUN_DATA_SOCKET.recv(5 - head_len)
-                if not data_recv:
-                    break
-                data += data_recv
-                head_len += len(data_recv)
-        except socket.error as e:
-            errno, e_str = e
-            # Windows errno is 1054, this would be errno.ECONRESET probably
-            if errno == 10054:
-                print '** Aimsun receiver: connection reset by peer'
-                print '   errno=%d, e_str=`%s`' % (errno, e_str)
-            else:
-                raise
 
-        # We have to break the outer loop as well
-        if not data_recv:
-            print '** no data available on Aimsun socket, exiting'
+    while True:
+
+        data = AIMSUN_PACKETCOMM.packet_receive()
+        if not data:
             break
-        # Convert string to integer representing message length in bytes
-        msg_len = int(data)
-        # Announce message length
-        print "Aimsun sent %s bytes" % msg_len
-        # Now fetch the whole string of msg_len
-        data_recv = None
-        data = ''
-        data_len = 0
-        while data_len < msg_len:
-            data_recv = AIMSUN_DATA_SOCKET.recv(min(msg_len - data_len, 8192))
-            if not data_recv:
-                break
-            data += data_recv
-            data_len += len(data_recv)
-        # We have to break the outer loop as well
-        if not data_recv:
-            break
-        # Announce that the message has been read
-        print 'Got the whole message'
+
         time_str, dets = pickle.loads(data)
 
         # Convert measurement data to XML
@@ -209,6 +187,7 @@ def start_aimsun(is_synchronous=False):
     :return: True if Aimsun microsimulation has been started
     """
     global AIMSUN_DATA_SOCKET
+    global AIMSUN_PACKETCOMM
     global RECEIVER_THREAD
     # Connect to the windows registry and find out the location of Aimsun executable
     rh = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
@@ -220,30 +199,39 @@ def start_aimsun(is_synchronous=False):
     # This starts Aimsun as a seaprate process and waits for it os become ready
     pid = os.spawnl(os.P_NOWAIT, aimsun_path, aimsun_exe, "-script", "aimsun_init_replication_v7.py",
                     "../sokp/sokp_v7.ang", "31334", "aapi_gantry.py")
-    print "Aimsun started as process %d, waiting for ping" % pid
+    print "** Aimsun started as process %d, waiting for ping" % pid
     try:
         AIMSUN_LISTEN_SOCKET.listen(1)
         # Now we have it up an running
         AIMSUN_DATA_SOCKET, addr = AIMSUN_LISTEN_SOCKET.accept()
-        print "Something connected from", addr
+        print "   Something connected from", addr
         # Give Aimsun one minute to start
         AIMSUN_DATA_SOCKET.settimeout(60)
-        data = AIMSUN_DATA_SOCKET.recv(1024)
+        # Initialise Aimsun PacketCommunicator instance
+        AIMSUN_PACKETCOMM = packet.PacketCommunicator(AIMSUN_DATA_SOCKET,LOGGER_NAME)
+        data = AIMSUN_PACKETCOMM.packet_receive()
     except socket.timeout:
-        print 'ERROR: Timeout when waiting for Aimsun to connect'
+        print '!! ERROR: Timeout when waiting for Aimsun to connect'
         return False
     # Make the socket blocking
     AIMSUN_DATA_SOCKET.settimeout(None)
-    print "Data:", data
-    # Start receiver thread
-    RECEIVER_THREAD = threading.Thread(target=aimsun_receiver)
-    RECEIVER_THREAD.start()
-    print 'Started receiver thread'
-    # Report back to the sender
-    if is_synchronous:
-        REQUEST_WFILE.write(SIMULATION_READY)
-        REQUEST_WFILE.flush()
-    return True
+    print "   Data:", data
+    # Check the command
+    # @TODO: Move the command names to gantryinterface and import it here
+    if data == packet.AIMSUN_UP:
+        print "   Got the correct initial handshake, sending configuration"
+        config = {'synchronous': is_synchronous}
+        data = pickle.dumps(config, pickle.HIGHEST_PROTOCOL)
+        AIMSUN_PACKETCOMM.packet_send(data)
+        # Start receiver thread
+        RECEIVER_THREAD = threading.Thread(target=aimsun_receiver)
+        RECEIVER_THREAD.start()
+        print '   Started receiver thread'
+        # Report back to the sender
+        if is_synchronous:
+            REQUEST_WFILE.write(SIMULATION_READY)
+            REQUEST_WFILE.flush()
+        return True
 
 
 def process_command(root, is_synchronous):
@@ -475,7 +463,7 @@ if __name__ == "__main__":
 
     # server.timeout = 10
     #server.handle_request()
-    print 'SIRID server component started, waiting for connection.'
+    print 'SIRID server component started on %s:%d, waiting for connection.' % (HOST, PORT)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
