@@ -45,6 +45,7 @@ class Globals(object):
     time_offset = 0
     lane_map = defaultdict(dict)
 
+
 SYMBOLS = dict(
     A=['Zhasnuto', 'A8 -Nebezpeèí smyku', 'A15 -Práce na silnici', 'A22 -Jiné nebezpeèí', 'A23 - Tvorba kolon',
        'A24 - Náledí', 'A26 – Mlha', 'A27 – Nehoda'],
@@ -56,23 +57,23 @@ SYMBOLS = dict(
 
 # Line map for right-hand direction and two-lane road. All traffic signs located on the right shoulder are supposed to
 # be related to the right lane, all traffic signs located on the left shoulder are related to the left lane.
-LANE_MAP_R2 = {9:2, 3:1, 1:1}
+LANE_MAP_R2 = {9: 2, 3: 1, 1: 1}
 
 # Line map for left-hand direction and two-lane road. All traffic signs located on the shoulder are supposed to
 # be related to the right lane.
-LANE_MAP_L2 = {0:2, 4:1, 2:1}
+LANE_MAP_L2 = {0: 2, 4: 1, 2: 1}
 
 # Line map for right-hand direction and three-lane road. All traffic signs located on the shoulder are supposed to
 # be related to the right lane.
-LANE_MAP_R3 = {9:3, 5:2, 3:1, 1:1}
+LANE_MAP_R3 = {9: 3, 5: 2, 3: 1, 1: 1}
 
 # Line map for left-hand direction and two-lane road. All traffic signs located on the shoulder are supposed to
 # be related to the right lane.
-LANE_MAP_L3 = {0:3, 6:2, 4:1, 2:1}
+LANE_MAP_L3 = {0: 3, 6: 2, 4: 1, 2: 1}
 
 # These constants are used for change speed action
 ALL_SEGMENTS = -1
-COMPLIANCE_LEVEL = 1.0 # 0.85
+COMPLIANCE_LEVEL = 1.0  # 0.85
 
 # This is the global interface module that facilitates IPC between Gantry
 # server module and Aimsun
@@ -84,7 +85,7 @@ GLOBALS = Globals()
 
 
 # class GantryRequest(SocketServer.StreamRequestHandler):
-#     """
+# """
 #     The RequestHandler class for the server.
 #
 #     It is instantiated once per connection to the server, and must override the
@@ -163,45 +164,64 @@ def change_vms_text(gantry_server_id_set):
             except KeyError:
                 logger.exception('unknown object id for gantry %s' % gantry_id)
 
+
 def apply_speed_limit(gantry_server_id_set):
     """Apply the speed limit for lanes following the gantry"""
     logger.debug("apply_speed_limit(): updating gantry servers %s" % repr(gantry_server_id_set))
     for gantry_server_id in gantry_server_id_set:
-        # A single VMS in Aimsun represents a gantry holding several variable message signs in reality.
-        speed_dict = GLOBALS.gantry_servers[gantry_server_id].get_speed_limits()
-        for gantry_id in speed_dict:
-            # Get a list of change speed action entries
-            logger.debug('apply_speed_limit(): processing gantry %s/%s' % (gantry_server_id, gantry_id))
-            for sign_id, lane_id, new_speed, vehicle_type in speed_dict[gantry_id]:
-                # Value of lane_id label follows the EDS convention of marking the lanes 9,3,1 or 9,5,3,1
-                # and 0,4,2 or 0,6,4,2 respectively. Aimsun counts lanes starting at the outside towards
-                # the left lane, hence in both left and right directions the appropriate Aimsun lane ids
-                # would be 2,1,- or
-                id_aimsun_lane = GLOBALS.lane_map[gantry_id][lane_id]
-                # Get the change speed action data
-                AKIPrintString("cmd :: changing speed limit on gantry %s sign %s" % (gantry_id, sign_id))
-                logger.debug("apply_speed_limit(): testing speed change on %s/%s lane %d (Aimsun: lane %d) vehicle type %d" %
-                             (gantry_id, sign_id, lane_id, id_aimsun_lane, vehicle_type))
-                # Loop over all sections that follow this gantry until the next gantry and set the limit
-                # for the given lane
-                for id_section in GLOBALS.sections[gantry_id]:
-                    # If there was an previous change speed action, disable it
-                    action_handle = GLOBALS.actions[id_section][id_aimsun_lane]
-                    if action_handle:
-                        logger.debug("actions[%d][%d] - removing previous speed action %s" %
-                                     (id_section, id_aimsun_lane, repr(action_handle)))
-                        AKIActionRemoveAction(action_handle)
-                        GLOBALS.actions[id_section][id_aimsun_lane] = None
-                    # Set the speed limit in case that the command is not zero
-                    if new_speed:
-                        action_handle = AKIActionAddDetailedSpeedAction(
-                            id_section, id_aimsun_lane, ALL_SEGMENTS, new_speed, vehicle_type, COMPLIANCE_LEVEL)
-                        if not action_handle:
-                            logger.error("cannot add change speed action [%d][%d]" % (id_section, id_aimsun_lane))
-                            raise ValueError("cannot add change speed action [%d][%d]" % (id_section, id_aimsun_lane))
-                        GLOBALS.actions[id_section][id_aimsun_lane] = action_handle
-                        logger.debug("actions[%d][%d] - added speed action %s (sign %s, speed %f km/h)" %
-                                     (id_section, id_aimsun_lane, repr(action_handle), sign_id, new_speed))
+        try:
+            # A single VMS in Aimsun represents a gantry holding several variable message signs in reality.
+            speed_dict = GLOBALS.gantry_servers[gantry_server_id].get_speed_limits()
+            for gantry_id in speed_dict:
+                # Get a list of change speed action entries
+                logger.debug('apply_speed_limit(): processing gantry %s/%s' % (gantry_server_id, gantry_id))
+                try:
+                    for sign_id, lane_id, new_speed, vehicle_type in speed_dict[gantry_id]:
+                        # Value of lane_id label follows the EDS convention of marking the lanes 9,3,1 or 9,5,3,1
+                        # and 0,4,2 or 0,6,4,2 respectively. Aimsun counts lanes starting at the outside towards
+                        # the left lane, hence in both left and right directions the appropriate Aimsun lane ids
+                        # would be 2,1,- or
+                        try:
+                            id_aimsun_lane = GLOBALS.lane_map[gantry_id][lane_id]
+                        except KeyError:
+                            logger.exception("lane_map[%s][%d] does not exist" % (gantry_id, lane_id))
+                            continue
+                        # Get the change speed action data
+                        AKIPrintString("cmd :: changing speed limit on gantry %s sign %s" % (gantry_id, sign_id))
+                        logger.debug(
+                            "apply_speed_limit(): "
+                            "testing speed change on %s/%s lane %d (Aimsun: lane %d) vehicle type %d" %
+                            (gantry_id, sign_id, lane_id, id_aimsun_lane, vehicle_type))
+                        try:
+                            # Loop over all sections that follow this gantry until the next gantry and set the limit
+                            # for the given lane
+                            for id_section in GLOBALS.sections[gantry_id]:
+                                # If there was an previous change speed action, disable it
+                                action_handle = GLOBALS.actions[id_section][id_aimsun_lane]
+                                if action_handle:
+                                    logger.debug("actions[%d][%d] - removing previous speed action %s" %
+                                                 (id_section, id_aimsun_lane, repr(action_handle)))
+                                    AKIActionRemoveAction(action_handle)
+                                    GLOBALS.actions[id_section][id_aimsun_lane] = None
+                                # Set the speed limit in case that the command is not zero
+                                if new_speed:
+                                    action_handle = AKIActionAddDetailedSpeedAction(
+                                        id_section, id_aimsun_lane, ALL_SEGMENTS, new_speed, vehicle_type,
+                                        COMPLIANCE_LEVEL)
+                                    if not action_handle:
+                                        logger.error(
+                                            "cannot add change speed action [%d][%d]" % (id_section, id_aimsun_lane))
+                                        raise ValueError(
+                                            "cannot add change speed action [%d][%d]" % (id_section, id_aimsun_lane))
+                                    GLOBALS.actions[id_section][id_aimsun_lane] = action_handle
+                                    logger.debug("actions[%d][%d] - added speed action %s (sign %s, speed %f km/h)" %
+                                                 (id_section, id_aimsun_lane, repr(action_handle), sign_id, new_speed))
+                        except KeyError:
+                            logger.exception('cannot process sections following the gantry %s' % gantry_id)
+                except KeyError:
+                    logger.exception('unknown gantry_id %s' % gantry_id)
+        except KeyError:
+            logger.exception('unknown gantry_server_id %s' % gantry_server_id)
 
 
 def AAPILoad():
@@ -255,7 +275,8 @@ def AAPILoad():
                         sub_device_description = ''
                     prefix = sub_device.attrib['prefix']
                     try:
-                        sub_instance = gantry_server.add_sub_device(id_device, ppk, id_sub_device, sub_device_type, prefix)
+                        sub_instance = gantry_server.add_sub_device(id_device, ppk, id_sub_device, sub_device_type,
+                                                                    prefix)
                     except ValueError as e:
                         logger.exception('cannot create sub_instance, ignoring it')
                         continue
@@ -279,13 +300,13 @@ def AAPILoad():
                 ushort_label = AKIConvertFromAsciiString(gantry_label)
                 object_id = ANGConnGetObjectId(ushort_label, True)
                 if object_id < 0:
-                    logger.error ("Gantry label '%s' not found, error code %d" % (gantry_label,object_id))
+                    logger.error("Gantry label '%s' not found, error code %d" % (gantry_label, object_id))
                     # raise KeyError("Gantry label '%s' not found, error code %d" % (gantry_label,object_id))
-                else :
+                else:
                     GLOBALS.gantry_obj_id[gantry_label] = object_id
                     logger.debug('gantry label %s is Aimsun object %d' % (gantry_label, object_id))
-            # Initial setup of VMS messages to their default values will be done in AAPIInit().
-            # #print gantry_server.get_gantry_messages()
+                    # Initial setup of VMS messages to their default values will be done in AAPIInit().
+                    # #print gantry_server.get_gantry_messages()
 
         # Create the server, binding to localhost on port 9999
         #server = SocketServer.TCPServer((HOST, PORT), GantryRequest)
@@ -345,7 +366,7 @@ def AAPIInit():
             m = section_re.match(name)
             if m:
                 # There has been a match
-                gantry_id = 'P'+m.group(1)
+                gantry_id = 'P' + m.group(1)
                 # Get section informaton, we need the number of lanes
                 section_info = AKIInfNetGetSectionANGInf(id_object)
                 if section_info.report:
@@ -397,13 +418,13 @@ def AAPIInit():
         # This way we will ignore the "extra" side lanes added before intersections, for example.
         for gantry_id in GLOBALS.lane_map:
             # Get the number of lanes
-            num_lanes = len(GLOBALS.lane_map[gantry_id])-1
+            num_lanes = len(GLOBALS.lane_map[gantry_id]) - 1
             for id_section in GLOBALS.sections[gantry_id]:
                 if num_lanes == 2:
-                    GLOBALS.actions[id_section] = {1:None, 2:None}
+                    GLOBALS.actions[id_section] = {1: None, 2: None}
                     logger.debug("gantry[%s][%d] has two lanes" % (gantry_id, id_section))
                 elif num_lanes == 3:
-                    GLOBALS.actions[id_section] = {1:None, 2:None, 3:None}
+                    GLOBALS.actions[id_section] = {1: None, 2: None, 3: None}
                     logger.debug("gantry[%s][%d] has three lanes" % (gantry_id, id_section))
                 else:
                     raise ValueError('allowed number of lanes for section %d is 2 or 3')
@@ -527,15 +548,15 @@ def AAPIPostManage(timeSim, timeSta, timTrans, acicle):
             logger.debug("AAPIPostManage reading out detectors")
             # Read all detectors for all vehicles
             dets = []
-            for (id_detector,name) in GLOBALS.detectors:
-                logger.debug("  %d,%s" % (id_detector,name))
-                count = {0:0}
-                speed = {0:0}
-                occup = {0:0}
+            for (id_detector, name) in GLOBALS.detectors:
+                logger.debug("  %d,%s" % (id_detector, name))
+                count = {0: 0}
+                speed = {0: 0}
+                occup = {0: 0}
                 for id_vehicletype in xrange(GLOBALS.num_vehicle_types + 1):
-                    count[id_vehicletype+1] = AKIDetGetCounterAggregatedbyId(id_detector, id_vehicletype)
-                    speed[id_vehicletype+1] = AKIDetGetSpeedAggregatedbyId(id_detector, id_vehicletype)
-                    occup[id_vehicletype+1] = AKIDetGetTimeOccupedAggregatedbyId(id_detector, id_vehicletype)
+                    count[id_vehicletype + 1] = AKIDetGetCounterAggregatedbyId(id_detector, id_vehicletype)
+                    speed[id_vehicletype + 1] = AKIDetGetSpeedAggregatedbyId(id_detector, id_vehicletype)
+                    occup[id_vehicletype + 1] = AKIDetGetTimeOccupedAggregatedbyId(id_detector, id_vehicletype)
                 # Vehicle type 0 which goes to index 1 is treated as "other" in SIRID, but the original zero
                 # index means all vehicle in Aimsun. SIRID indexes this information as vehicle class 9.
                 # TODO: Check the names of vehicle classes so that te classes may be mapped correctly

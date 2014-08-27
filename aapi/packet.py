@@ -72,4 +72,4 @@ class PacketCommunicator(object):
                              (HEAD_LENGTH, len(msg_str)))
         self.socket.sendall(msg_str)
         self.socket.sendall(data)
-        self.logger.debug("sent `%s`." % repr(msg_str + data))
+        # self.logger.debug("sent `%s`." % repr(msg_str + data))

@@ -1,18 +1,22 @@
 #!/usr/bin/python
 # -*- coding: windows-1250 -*-
 
+
 import re
 import xml.etree.ElementTree as Et
 from collections import defaultdict
 
+# Warning: Do not change the definition of SYMBOLS, it is only for documentation purposes.
+# Particular symbol strings are defined as class variables in corresponding classes.
 SYMBOLS = {
     'A': ['Zhasnuto', 'A8 -Nebezpeèí smyku', 'A15 -Práce na silnici', 'A22 -Jiné nebezpeèí', 'A23 - Tvorba kolon',
           'A24 - Náledí', 'A26 – Mlha', 'A27 – Nehoda'],
     'B': ['Zhasnuto', '120', '100', '80', '60'],
-    'F': ['Zhasnuto', 'Zákaz vjezdu NV', 'Šipka vlevo', 'Šipka vpravo', 'Konec omezení'],
+    'F': ['(nedefinováno)', '(nedefinováno)', 'Zákaz vjezdu NV', 'Šipka vpravo', 'Šipka vlevo', 'Konec omezení', '(nedefinováno)', '(nedefinováno)', 'Zhasnuto'],
     'EA': ['Zhasnuto', '500m', '1000m', '1500m', '2000m', '2500m', '3000m', '3500m', '4000m', '4500m', '5000m', '5500m',
            '6000m', '6500m', '7000m', '7500m', '8000m', '8500m', '9000m', '9500m', '10000m'],
     'EF': ['Zhasnuto', '3,5t', '6t', '7,5t', '9t', '12t']}
+""":type : dict[str,list[str]]"""
 
 LANE_ID_TO_STR = {
     0: 'left',
@@ -23,6 +27,7 @@ LANE_ID_TO_STR = {
     3: 'right',
     5: 'middle',
     9: 'left'}
+""":type : dict[int,str]"""
 
 CATEGORY = [
     {'id': '0', 'type': '-?-', 'description': 'others'},
@@ -35,10 +40,8 @@ CATEGORY = [
     {'id': '7', 'type': 'trc', 'description': 'semitrailer_truck'},
     {'id': '8', 'type': 'bus', 'description': 'bus'},
     {'id': '9', 'type': 'all', 'description': 'all'}]
+""":type : list[dict[str,str]"""
 
-# The elements on the ring have different stationing format: some use 0Mxx for -x.y kilimeters, some set zero
-# as 82.5 km ... and moreover, some elements have different stationing in positive and negative notation,
-# probably due to some copy-and-pase errors.
 STATIONING_TRANSLATION = {
     '0M10': '0815',
     '0M12': '0813',
@@ -48,26 +51,42 @@ STATIONING_TRANSLATION = {
     '0M44': '0781',
     '0M54': '0771',
     '0M55': '0770'}
+"""Translation between the two incompatible stationing formats.
+The infrastructure elements on the highway ring have different stationing formats: some use 0Mxx for -x.y kilometers,
+some set zero as 82.5 km (which would be written as 0825 hectometres) ... and moreover, some elements have different
+stationing in positive and negative notation, probably due to some copy-and-paste errors.
+:type : dict[str,str]"""
 
-class GantrySubDevice:
+class GantrySubDevice(object):
     """Represents a single gantry sub-device, that is, a signalling element.
 
-    The signalling element may be of different type - variable message sign (VMS) represented
+    The signalling elements may be of different type - variable message sign (VMS) represented
     as a text field, pre-defined road sign (speed limit, lane closure etc)."""
-    MESSAGES = []
-    PREFIX = ''
-    TYPE = ''
 
-    # This is a kind of abstract class which wraps functionality of child classes. In order to
-    # conveniently create them, a factory method is used
+    MESSAGES = []
+    """A list of messages that this sub-device is able to display.
+    :type : list[str]"""
+    PREFIX = ''
+    """:type : str"""
+    TYPE = ''
+    """:type : str"""
+
     @staticmethod
     def factory(prefix, id_sub_device, id_type):
-        """
+        """Factory method providing appropriate child class for the prefix and id_type.
 
-        :param prefix:
-        :param id_type:
-        :param id_sub_device:
-        :return: :raise ValueError:
+        This is a kind of abstract class which wraps functionality of child classes. In order to conveniently create
+        them, a factory method is used
+
+        :param prefix: a unique identifier of this device (the term "prefix" is coined in the XML specs)
+        :type prefix: str
+        :param id_sub_device: integer address of the sub-device within the parent device
+        :type id_sub_device: str
+        :param id_type: type of the sub-device ('A' for warning signs, 'B' for speed limits and so on)
+        :type id_type: str
+        :return: class instance corresponding to the prefix and id_type
+        :rtype: sub-class of GantrySubDevice
+        :raise ValueError: if the prefix is not compatible with the id_type
         """
         if GantryWarningSign.is_acceptable(prefix, id_type):
             return GantryWarningSign(prefix, id_sub_device, id_type)
@@ -84,15 +103,16 @@ class GantrySubDevice:
         else:
             raise ValueError('incompatible prefix (%s) and type (%s) of gantry sub-device' % (prefix, id_type))
 
-    # This is used to find whether the combination of id_type and prefix can be used to create
-    # the class in concern
     @classmethod
     def is_acceptable(cls, prefix, id_type):
-        """
+        """Find whether the prefix and id_type can be used to create the class type cls.
 
-        :param prefix:
-        :param id_type:
-        :return:
+        :param prefix: a unique identifier of this device (the term "prefix" is coined in the XML specs)
+        :type prefix: str
+        :param id_type: type of the sub-device ('A' for warning signs, 'B' for speed limits and so on)
+        :type id_type: str
+        :return: True if the combination of prefix and id_type matches class type cls.
+        :rtype: bool
         """
         return (prefix[0] == cls.PREFIX) and (id_type in cls.TYPE)
 
@@ -114,14 +134,13 @@ class GantrySubDevice:
         # Nothing has been measured
         self.measurements = None
 
-    # Get command
     def set_message_id(self, id_message):
-        """
+        """Set the message displayed by a sub-device.
 
-
-        :rtype : str
-        :param id_message:
-        :return: :raise ValueError:
+        :param id_message: numerical identifier of the message to display
+        :type id_message: int
+        :raises ValueError: if the id_message is not supported by the sub-device
+        :raises TypeError: if the device does not support displaying messages (detectors, for example)
         """
         if self.has_message_text:
             if id_message < 0 or id_message >= self.num_messages:
@@ -130,20 +149,28 @@ class GantrySubDevice:
         else:
             raise TypeError('cannot set message text on devices that do not support it')
 
-    # Get message text
     def get_message_text(self):
+        """Get the text of the message displayed by this sub-device.
+        :return: a string containing the message
+        :rtype: str
+        """
         return self.MESSAGES[self.message_id]
 
-    # Get sub-device prefix:
     def get_prefix(self):
-        """Get prefix of the sub-device.
+        """Get the prefix of the sub-device.
 
+        :return: sub-device unique textual identifier (prefix)
         :rtype : str
-        :return:
         """
         return self.prefix
 
     def set_measurements(self, measurements):
+        """Set measurements provided by this device.
+
+        This actually makes sense only for detectors.
+        :param measurements: Detector measurements provided by micro-simulator.
+        :type measurements: tuple[tuple[float,float,float]]
+        """
         self.measurements = measurements
 
 
@@ -182,13 +209,21 @@ class GantrySpeedLimit(GantrySubDevice):
     def __init__(self, prefix, id_sub_device, id_type):
         """
 
-        :type self: GantryLoopDetector
         """
         GantrySubDevice.__init__(self, prefix, id_sub_device, id_type)
         self.id_lane = int(prefix[1])
+        """Numerical id of the lane.
+        This id follows the original EDS format with number 9,3,1 and 9,5,3,1 for the lanes going in the direction
+        of growing stationing values, and lane numbers 0,4,2 and 0,6,4,2 for the opposite direction. Lanes 1 and 2
+        re shoulders, lanes 9 and 0 are the left-most (fastest) lanes.
+        :type : int"""
+
 
     def get_speed_limit(self):
-        """Return a tuple containing speed limit information"""
+        """Return a tuple containing speed limit information.
+
+        :rtype: tuple[str,int,str,int]
+        """
         # TODO Figure out how to check which class of vehicles this limit applies to.
         # For the time being we expect all vehicles to be forced to keep the speed limit.
         return self.prefix, self.id_lane, self.SPEED_LIMITS[self.message_id], 0
@@ -197,7 +232,9 @@ class GantrySpeedLimit(GantrySubDevice):
 class GantryRegulatorySign(GantrySubDevice):
     """Regulatory sign other than a speed limit at some position on the gantry display."""
     # Messages (traffic signs) displayed
-    MESSAGES = ['Zhasnuto', 'Zákaz vjezdu NV', 'Šipka vlevo', 'Šipka vpravo', 'Konec omezení']
+    # Note that LRD command 8 is somewhere being translated to 0
+    MESSAGES = ['Zhasnuto', '(nedefinováno)', 'Zákaz vjezdu NV', 'Šipka vlevo', 'Šipka vpravo',
+                'Konec omezení', '(nedefinováno)', '(nedefinováno)', 'Zhasnuto']
     # Gantry sub-device type
     TYPE = ['LED', 'LED+DT']
     # Gantry sub-device type
@@ -228,7 +265,16 @@ class GantryLoopDetector(GantrySubDevice):
         """
         GantrySubDevice.__init__(self, prefix, id_sub_device, id_type)
         self.id_lane = int(prefix[3])
+        """Numerical id of the lane.
+        This id follows the original EDS format with number 9,3,1 and 9,5,3,1 for the lanes going in the direction
+        of growing stationing values, and lane numbers 0,4,2 and 0,6,4,2 for the opposite direction. Lanes 1 and 2
+        re shoulders, lanes 9 and 0 are the left-most (fastest) lanes.
+        :type : int"""
         self.str_lane = LANE_ID_TO_STR[self.id_lane]
+        """Position of the lane within the communication.
+        This value contains an English text that specifies the position of the lane. See the contents of
+        LANE_ID_TO_STR.
+        :type : str"""
         self.has_message_text = False
 
 
