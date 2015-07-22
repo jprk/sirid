@@ -28,8 +28,6 @@ AIMSUN_PORT = 1251
 """:type : PacketCommunicator"""
 AIMSUN_PACKETCOMM = None
 # @type str
-LAST_MEASUREMENTS = None
-# @type str
 SIMULATION_READY = '<?xml version="1.0" encoding="UTF-8" ?><root msg="simulation_ready"></root>'
 # @type str
 SIMULATION_FINISHED = '<?xml version="1.0" encoding="UTF-8" ?><root msg="simulation_finished"></root>'
@@ -45,10 +43,12 @@ RECEIVER_ADDRESS = dict()
 SEQUENCE_NR = 1
 # See http://stackoverflow.com/questions/749796/pretty-printing-xml-in-python
 MINIDOM_TEXT_RE = re.compile('>\n\s+([^<>\s].*?)\n\s+</', re.DOTALL)
+#
+CONFIG = None
 
 # Maximum size of a XML message. If the input buffer grows above this limit it is
 # cleared and the reading starts over.
-MAX_XML_SIZE = 16*1024*1024
+MAX_XML_SIZE = 16 * 1024 * 1024
 
 # Buffer size. This is a chunk size
 BUFFER_SIZE = 16
@@ -58,36 +58,32 @@ LAST_MEASUREMENTS_FILE = 'last_measurements.xml'
 
 LOGGER_NAME = "sirid_server"
 
-stdout_logger = logging.getLogger(LOGGER_NAME)
-stdout_logger.setLevel(logging.DEBUG)
-# create console handler with a higher log level
+# Create a logger object
+LOGGER = logging.getLogger(LOGGER_NAME)
+LOGGER.setLevel(logging.DEBUG)
+# Create file handler which logs even debug messages
+fh = logging.FileHandler(LOGGER_NAME + '.log', mode='w')
+fh.setLevel(logging.DEBUG)
+# Create console handler with a lower log level
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-# create formatter and add it to the handlers
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setLevel(logging.INFO)
+# create formatters and add it to the handlers
+formatter = logging.Formatter('%(threadName)-10s: %(levelname)-8s %(message)s')
 ch.setFormatter(formatter)
-# Add the handler to the logger
-stdout_logger.addHandler(ch)
+formatter = logging.Formatter('%(asctime)s - %(threadName)-10s: %(levelname)-8s %(message)s')
+fh.setFormatter(formatter)
+# add the handlers to logger
+LOGGER.addHandler(ch)
+LOGGER.addHandler(fh)
 
-file_logger = logging.getLogger(LOGGER_NAME+"_f")
-file_logger.setLevel(logging.DEBUG)
-# create console handler with a higher log level
-ch = logging.FileHandler('sirid_server.log', mode='w')
-ch.setLevel(logging.DEBUG)
-# create formatter and add it to the handlers
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-# Add the handler to the logger
-# stdout_logger.addHandler(ch)
-file_logger.addHandler(ch)
-
-stdout_logger.debug("stdout logger")
-file_logger.debug("file logger")
+LOGGER.debug("logging started")
 
 fhandle = open(LAST_MEASUREMENTS_FILE, 'r')
 LAST_MEASUREMENTS = fhandle.read()
 fhandle.close()
-stdout_logger.debug("last measurements loaded")
+
+LOGGER.debug("last measurements loaded")
+
 
 def recursive_defaultdict():
     return defaultdict(recursive_defaultdict)
@@ -96,6 +92,7 @@ def recursive_defaultdict():
 def aimsun_receiver():
     global LAST_MEASUREMENTS
     global AIMSUN_PACKETCOMM
+    global AIMSUN_DATA_SOCKET
     global SEQUENCE_NR
     global AIMSUN_RUNNING
 
@@ -116,7 +113,7 @@ def aimsun_receiver():
             det_name, det_map, data = det
             # TODO: This is ugly. Group the information into a class or some other structure.
             id_gantry_server, id_device, device_type, id_sub_device, \
-            sub_device_type, sub_device_description, id_lane, det_type, str_lane, prefix = det_map
+                sub_device_type, sub_device_description, id_lane, det_type, str_lane, prefix = det_map
             # Store information needed to construct the XML output
             gs_device_type[id_gantry_server][id_device] = \
                 device_type
@@ -154,17 +151,22 @@ def aimsun_receiver():
                         lane_node = Et.SubElement(sub_device_node,
                                                   'lane',
                                                   attrib={'id': str(id_lane), 'type': det_type, 'lane': str_lane})
-                        # print "   %d/%d/%d (%s,%s)" % (id_device, id_sub_device, id_lane, det_name, prefix)
+                        LOGGER.debug("   %d/%d/%d (%s,%s)" % (id_device, id_sub_device, id_lane, det_name, prefix))
                         count, speed, occup = data
                         for i in xrange(9):
                             category_node = Et.SubElement(lane_node, 'category', attrib=gantry.CATEGORY[i])
                             count_node = Et.SubElement(category_node, 'intensity')
                             speed_node = Et.SubElement(category_node, 'speed')
                             occup_node = Et.SubElement(category_node, 'occupancy')
-                            count_node.text = str(int(count[i]))
-                            speed_node.text = str(float(speed[i]))
-                            occup_node.text = str(float(occup[i]))
-                            # print "    [%d]: %10f %10f %10f" % (i, count[i], speed[i], occup[i])
+                            try:
+                                count_node.text = str(int(count[i]))
+                                speed_node.text = str(float(speed[i]))
+                                occup_node.text = str(float(occup[i]))
+                                LOGGER.debug("    [%d]: %10f %10f %10f" % (i, count[i], speed[i], occup[i]))
+                            except KeyError as ke:
+                                # Accept the situation when the model does not provide 9 classes of vehicles
+                                # TODO: This is just a kludge, the model does have to have 9 classes
+                                LOGGER.warning('Key error when processing detector data:', ke)
 
         # See also http://pymotw.com/2/xml/etree/ElementTree/create.html for information about pretty-printing
         minified_str = Et.tostring(envelope, 'UTF-8')
@@ -178,31 +180,33 @@ def aimsun_receiver():
         LAST_MEASUREMENTS = xml_string
         send_last_measurements(RECEIVER_WFILES.keys())
 
-        fhandle = open(LAST_MEASUREMENTS_FILE, 'w')
-        fhandle.write(LAST_MEASUREMENTS)
-        fhandle.close()
+        fh_measurements = open(LAST_MEASUREMENTS_FILE, 'w')
+        fh_measurements.write(LAST_MEASUREMENTS)
+        fh_measurements.close()
 
     print '-- Aimsun disconnected, receiver thread finished'
     AIMSUN_DATA_SOCKET = None
     AIMSUN_RUNNING = False
 
     if RECEIVER_WFILES:
-        print '-- notifying the controllers that the simulation is no longer active'
-        file_logger.debug('sending notification')
+        LOGGER.info('-- notifying the controllers that the simulation is no longer active')
+        LOGGER.debug('sending notification')
         with RECEIVER_LOCK:
-            print '   got lock'
+            LOGGER.debug('   got lock')
             for thread_name in RECEIVER_WFILES:
+                # noinspection PyBroadException
                 try:
                     wfile = RECEIVER_WFILES[thread_name]
                     wfile.write(SIMULATION_FINISHED)
                     wfile.flush()
-                    print "   -- notification sent to receiver in", thread_name
+                    LOGGER.info("   -- notification sent to receiver in {0:s}/{1:s}".format(
+                        thread_name, RECEIVER_ADDRESS[thread_name]))
                 except:
                     e_type, e_val, e_trace = sys.exc_info()
-                    print 'Exception for receiver', thread_name, '-', e_type, e_val
-        print '   lock released'
+                    LOGGER.exception('Exception for receiver {0:s} - {1:s} {2:s}'.format(thread_name, e_type, e_val))
+        LOGGER.debug('   lock released')
     else:
-        print '-- no controllers seem to be active at the moment, no notification sent'
+        LOGGER.info('-- no controllers seem to be active at the moment, no notification sent')
 
 
 def send_last_measurements(receiver_list):
@@ -211,35 +215,40 @@ def send_last_measurements(receiver_list):
         # If an error occurs there, it will be handled after the sending task has been completed.
         current_thread = threading.current_thread()
         master_thread_name = current_thread.name
-        print '   waiting on receiver lock in master thread '+master_thread_name
+        print '   waiting on receiver lock in master thread ' + master_thread_name
         with RECEIVER_LOCK:
-            file_logger.debug('locked by %s for %s' % (master_thread_name, str(receiver_list)))
-            print '-- send_last_measurement begin in '+master_thread_name
+            LOGGER.debug('locked by %s for %s' % (master_thread_name, str(receiver_list)))
+            print '-- send_last_measurement begin in ' + master_thread_name
             for thread_name in receiver_list:
+                # noinspection PyBroadException
                 try:
                     wfile = RECEIVER_WFILES[thread_name]
                     print "   -- sending data to receiver %s/%s" % (thread_name, RECEIVER_ADDRESS[thread_name])
-                    file_logger.debug("sending data to receiver %s/%s" % (thread_name, RECEIVER_ADDRESS[thread_name]))
+                    LOGGER.debug("sending data to receiver %s/%s" % (thread_name, RECEIVER_ADDRESS[thread_name]))
                     wfile.write(LAST_MEASUREMENTS)
-                    file_logger.debug("write ok")
+                    LOGGER.debug("write ok")
                     wfile.flush()
-                    file_logger.debug("flush ok, sent data to receiver %s/%s" % (thread_name, RECEIVER_ADDRESS[thread_name]))
+                    LOGGER.debug(
+                        "flush ok, sent data to receiver %s/%s" % (thread_name, RECEIVER_ADDRESS[thread_name]))
                 except socket.error as e:
-                    file_logger.error('socket error in %s for receiver %s/%s' % (master_thread_name, thread_name, RECEIVER_ADDRESS[thread_name]))
+                    LOGGER.error('socket error in %s for receiver %s/%s' % (
+                        master_thread_name, thread_name, RECEIVER_ADDRESS[thread_name]))
                     print "   !! socket.error for write() in %s/%s (errno=%d, `%s`), discarding thread" % \
                           (thread_name, RECEIVER_ADDRESS[thread_name], e.errno, e.strerror)
                     RECEIVER_WFILES.pop(thread_name, None)
                 except:
                     e_type, e_val, e_trace = sys.exc_info()
-                    file_logger.error('exception %s (%s) in %s for receiver %s/%s' % (e_type, e_val, master_thread_name, thread_name, RECEIVER_ADDRESS[thread_name]))
+                    LOGGER.error('exception %s (%s) in %s for receiver %s/%s' % (
+                        e_type, e_val, master_thread_name, thread_name, RECEIVER_ADDRESS[thread_name]))
                     print thread_name, "Exception -", e_type, e_val
-            print '   send_last_measurement end in '+master_thread_name
-        file_logger.debug('unlocked by'+master_thread_name)
-        print '   lock released in '+ master_thread_name
+            print '   send_last_measurement end in ' + master_thread_name
+        LOGGER.debug('unlocked by' + master_thread_name)
+        print '   lock released in ' + master_thread_name
     else:
         print '-- no last measurements are available, ignoring this request'
 
-    stdout_logger.debug('number of active threads: %d' % threading.active_count())
+    LOGGER.debug('number of active threads: %d' % threading.active_count())
+
 
 def start_aimsun(is_synchronous=False, replication_id=0):
     """Start Aimsun microsimulator.
@@ -262,10 +271,19 @@ def start_aimsun(is_synchronous=False, replication_id=0):
     aimsun_exe = "Aimsun.exe"
     aimsun_path = os.path.join(home_dir, aimsun_exe)
     # Check the replication_id
-    if not replication_id: replication_id=31334
+    if not replication_id:
+        replication_id = CONFIG.getint('model', 'replication_id')
+        if not replication_id:
+            raise ValueError('Replication id not specified (tried both .ini and XML command)')
+    # Check the path to the ANG file
+    ang_path = CONFIG.get('model', 'path')
+    if not replication_id:
+        raise ValueError('Model path not specified')
+    if not os.path.isfile(ang_path):
+        raise ValueError('Model `{:s}` does not exist'.format(ang_path))
     # This starts Aimsun as a separate process and waits for it to become ready
     pid = os.spawnl(os.P_NOWAIT, aimsun_path, aimsun_exe, "-script", "aimsun_init_replication_v7.py",
-                    "../sokp/sokp_v7.ang", str(replication_id), "aapi_gantry.py")
+                    ang_path, str(replication_id), "aapi_gantry.py")
     print "** Aimsun replication %d started as process %d, waiting for ping" % (replication_id, pid)
     try:
         AIMSUN_LISTEN_SOCKET.listen(1)
@@ -275,7 +293,7 @@ def start_aimsun(is_synchronous=False, replication_id=0):
         # Give Aimsun one minute to start
         AIMSUN_DATA_SOCKET.settimeout(60)
         # Initialise Aimsun PacketCommunicator instance
-        AIMSUN_PACKETCOMM = packet.PacketCommunicator(AIMSUN_DATA_SOCKET,LOGGER_NAME)
+        AIMSUN_PACKETCOMM = packet.PacketCommunicator(AIMSUN_DATA_SOCKET, LOGGER_NAME)
         data = AIMSUN_PACKETCOMM.packet_receive()
     except socket.timeout:
         print '!! ERROR: Timeout when waiting for Aimsun to connect'
@@ -340,10 +358,10 @@ def process_command(root, is_synchronous):
                     addsymbol_node = command_node.find("addsymbol")
 
                     # Existing nodes evaluate to false
-                    if addsymbol_node != None:
+                    if addsymbol_node is not None:
                         print "WARNING: Don't know how to handle <addsymbol>"
 
-                    if symbol_node != None:
+                    if symbol_node is not None:
                         id_message = int(symbol_node.text)
                         command = (id_gantry_server, (id_device, id_sub_device, id_message, validity))
                         print "Sending command `%s` to Aimsun ..." % repr(command)
@@ -359,7 +377,7 @@ def process_command(root, is_synchronous):
                     raise ValueError('Expected <command> tag, got <%s>' % command_node.tag)
 
     if is_missing_symbol:
-        stdout_logger.error("missing <symbol> node:\n" + Et.tostring(root, 'UTF-8'))
+        LOGGER.error("missing <symbol> node:\n" + Et.tostring(root, 'UTF-8'))
 
     if is_synchronous:
         print "Unlocking Aimsun threads ..."
@@ -368,19 +386,6 @@ def process_command(root, is_synchronous):
 
 def process_get_long_status(thread_name):
     """Process a XML command GET_LONG_STATUS sent from the controller
-    :param root: Et.Element
-
-    The command looks like follows:
-
-        <?xml version="1.0" encoding="utf-8" ?>
-        <gantry msg="get_long_status">
-            <datetime_format>YYYY-MM-DD hh:mm:ssZ</datetime_format>
-            <send_time>2011-08-13 14:12:55</send_time>
-            <sender>Mogas</sender>
-            <receiver>Aimsun</receiver>
-            <transmission>tcp</transmission>
-            <auth_code>Me be MOGAS! Me want data!</auth_code>
-        </gantry>
     """
 
     print "-- get_long_status requested by thread %s/%s" % (thread_name, RECEIVER_ADDRESS[thread_name])
@@ -396,7 +401,7 @@ def process_xml_message(root, is_synchronous, thread_name):
     # root = tree.getroot()
 
     # TODO: Does not work
-    #print "Locking Aimsun threads ..."
+    # print "Locking Aimsun threads ..."
     #AIMSUN_DATA_SOCKET.sendall('@LOCK')
 
     # As per documentation we have two message types to receive:
@@ -416,14 +421,14 @@ def process_xml_message(root, is_synchronous, thread_name):
                 process_get_long_status(thread_name)
                 log_message = False
             else:
-                stdout_logger.error("Unsupported tag <gantry msg='%s'>" % msg_type)
+                LOGGER.error("Unsupported tag <gantry msg='%s'>" % msg_type)
         else:
-            stdout_logger.error("Unsupported format of <gantry> tag: missing `msg` attribute.")
+            LOGGER.error("Unsupported format of <gantry> tag: missing `msg` attribute.")
     else:
-        stdout_logger.error("Unsupported root tag <%s>" % root.tag)
+        LOGGER.error("Unsupported root tag <%s>" % root.tag)
 
     if log_message:
-        stdout_logger.error("Unsupported message " + Et.tostring(root,' UTF-8'))
+        LOGGER.error("Unsupported message " + Et.tostring(root, ' UTF-8'))
         # raise TypeError('Unsupported message type')
 
 
@@ -443,10 +448,6 @@ class GantryRequest(SocketServer.StreamRequestHandler):
     to connect at a time.
     """
 
-    # Initially we assume asynchronous operation mode
-    is_synchronous = False
-    empty_count = 0
-
     def handle(self):
 
         # Global file-like object that writes to the connection to the client
@@ -458,7 +459,7 @@ class GantryRequest(SocketServer.StreamRequestHandler):
         # Make the information about the outbound connection global. This way also the Aimsun
         # sender thread will be able to write data to all clients
         RECEIVER_WFILES[thread_name] = self.wfile
-        RECEIVER_ADDRESS[thread_name] = self.client_address
+        RECEIVER_ADDRESS[thread_name] = str(self.client_address)
 
         print "-- handler %s started for connection from %s" % (thread_name, str(self.client_address))
 
@@ -472,6 +473,8 @@ class GantryRequest(SocketServer.StreamRequestHandler):
         tag_name = None
         closing_tag = None
         look_for_eet = True
+
+        empty_count = 0
 
         # Infinite loop serving the requests from the SIRID hub.
         while True:
@@ -492,7 +495,8 @@ class GantryRequest(SocketServer.StreamRequestHandler):
 
             if not buff:
                 # No data from the connection means the connection has been closed
-                print "   -- #%04d, empty buff [%s] after recv(), probable closed connection for %s/%s" % (empty_count, repr(buff), thread_name, str(self.client_address))
+                print "   -- #%04d, empty buff [%s] after recv(), probable closed connection for %s/%s" % (
+                    empty_count, repr(buff), thread_name, str(self.client_address))
                 empty_count += 1
                 if empty_count >= 1000:
                     print "      too many empty buffers, quitting"
@@ -539,10 +543,10 @@ class GantryRequest(SocketServer.StreamRequestHandler):
                     sp_pos = data.find(' ', open_pos)
                     if 0 <= sp_pos < close_pos:
                         # Tag format <root attr="val">
-                        tag_name = data[open_pos+1:sp_pos]
+                        tag_name = data[open_pos + 1:sp_pos]
                     else:
                         # Tag format <root>
-                        tag_name = data[open_pos+1:close_pos]
+                        tag_name = data[open_pos + 1:close_pos]
                     if tag_name[0].isalpha():
                         # We have a root tag
                         print '   got root tag <%s>' % tag_name
@@ -569,11 +573,11 @@ class GantryRequest(SocketServer.StreamRequestHandler):
                 # The test for empty-element tag shall occur only in the first round of testing
                 # right after the opening part of the tag has been identified.
                 if look_for_eet:
-                    if data[close_pos-1] == '/':
+                    if data[close_pos - 1] == '/':
                         # Empty-element tag
-                        self.process_xml_string(data[open_pos:close_pos+1])
+                        self.process_xml_string(data[open_pos:close_pos + 1])
                         # Discard the processed part of the buffer
-                        data = data[close_pos+1:]
+                        data = data[close_pos + 1:]
                         # And we go back to `no_root_tag`
                         no_root_tag = True
                         start_pos = 0
@@ -582,7 +586,7 @@ class GantryRequest(SocketServer.StreamRequestHandler):
                         continue
                     else:
                         # Define what the closing tag tag is
-                        closing_tag = '</'+tag_name+'>'
+                        closing_tag = '</' + tag_name + '>'
                         # Remember its length
                         closing_tag_len = len(closing_tag)
                         # Do not look consider empty-element tags until the next root element candidate
@@ -597,14 +601,14 @@ class GantryRequest(SocketServer.StreamRequestHandler):
                     # been already read (the text ends for example with '...</roo') so the
                     # position from which we continue the search is not the end of current
                     # `data` string, but it is offset by the length of the closing tag
-                    close_pos = len(data)-closing_tag_len
+                    close_pos = len(data) - closing_tag_len
                     if close_pos < 0:
                         close_pos = 0
                     # Signal the need to read another portion of the incoming message
                     do_process_data = False
                 else:
                     # We have a closing tag
-                    end_pos = close_pos+closing_tag_len
+                    end_pos = close_pos + closing_tag_len
                     self.process_xml_string(data[open_pos:end_pos])
                     # Discard the part of `data` that corresponds to the XML message
                     data = data[end_pos:]
@@ -616,7 +620,7 @@ class GantryRequest(SocketServer.StreamRequestHandler):
                     # The `data` string may still contain a part of the next XML message (or even
                     # a full one) and `do_process_data` shall therefore still remain set to True
 
-            # End of the inner part of the `do_process_data loop
+                    # End of the inner part of the `do_process_data loop
 
         # End of the receiver loop
         print "-- handler %s/%s returning" % (thread_name, str(self.client_address))
@@ -650,6 +654,9 @@ class GantryRequest(SocketServer.StreamRequestHandler):
         current_thread = threading.current_thread()
         thread_name = current_thread.name
 
+        # Initially we assume asynchronous mode when Aimsun does not wait for the control
+        is_synchronous = False
+
         # Now we have something that looks like a valid XML command stanza for a gantry server
         print '--------------------'
         print "XML STRING:"
@@ -672,7 +679,7 @@ class GantryRequest(SocketServer.StreamRequestHandler):
         # Only one thread is allowed to start Aimsun, other threads wait until the lock has been
         # released.
         with AIMSUN_STARTUP_LOCK:
-            #Check if Aimsun is already running, if not, start it.
+            # Check if Aimsun is already running, if not, start it.
             if not AIMSUN_RUNNING:
                 # Check that the message is of type get_long_status. In that case it may contain
                 # - a child element that requests our communication with the client to be synchronous,
@@ -680,22 +687,22 @@ class GantryRequest(SocketServer.StreamRequestHandler):
                 replication_id = 0
                 if root.tag == 'gantry' and root.attrib['msg'] == 'get_long_status':
                     synchronous = root.find('synchronous')
-                    if synchronous != None:
+                    if synchronous is not None:
                         # TODO: Check if self.is_synchronous is necessary. Local variable should suffice.
-                        self.is_synchronous = (synchronous.text.strip() == 'true')
-                        if self.is_synchronous:
+                        is_synchronous = (synchronous.text.strip() == 'true')
+                        if is_synchronous:
                             print '** Synchronous operational mode requested'
                         else:
                             print '!! Unknown text in <synchronous> tag ignored, assuming async mode'
                     replication = root.find('replication')
-                    if replication != None:
+                    if replication is not None:
                         try:
-                            replication_id= int(replication.text)
+                            replication_id = int(replication.text)
                             print '** Got replication id %s' % replication_id
                         except ValueError:
                             print '!! Unknown text in <replication> tag ignored (%s)' % replication.text
                 # Start Aimsun
-                if start_aimsun(self.is_synchronous, replication_id):
+                if start_aimsun(is_synchronous, replication_id):
                     AIMSUN_RUNNING = True
                     print "** Aimsun is up and running"
                 else:
@@ -707,8 +714,7 @@ class GantryRequest(SocketServer.StreamRequestHandler):
         # We have a problem handling long XML messages directly in an AAPI extension due to GIL
         # (global interpreter lock) - the command is being parsed over several microsimulation
         # steps.
-        process_xml_message(root, self.is_synchronous, thread_name)
-
+        process_xml_message(root, is_synchronous, thread_name)
 
 
 if __name__ == "__main__":
@@ -722,10 +728,10 @@ if __name__ == "__main__":
         sys.exit(-1)
 
     # Parse the config file with host address and port number
-    config = ConfigParser.RawConfigParser()
-    config.read('sirid_server.ini')
-    host_ip_str = config.get('local', 'host')
-    port_num = config.getint('local', 'port')
+    CONFIG = ConfigParser.RawConfigParser()
+    CONFIG.read('sirid_server.ini')
+    host_ip_str = CONFIG.get('local', 'host')
+    port_num = CONFIG.getint('local', 'port')
 
     # Create a communication socket for Aimsun
     AIMSUN_LISTEN_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -740,7 +746,7 @@ if __name__ == "__main__":
     SERVER.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     # server.timeout = 10
-    #server.handle_request()
+    # server.handle_request()
     print 'SIRID server component started on %s:%d, waiting for connection.' % (host_ip_str, port_num)
 
     # Activate the server; this will keep running until you
